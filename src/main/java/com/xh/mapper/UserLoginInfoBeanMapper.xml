@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xh.dao.UserLoginInfoBeanMapper">
+	<resultMap id="BaseResultMap" type="com.xh.comm.entry.UserLoginInfoBean">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="VARCHAR" />
+		<result column="login_time" property="loginTime" jdbcType="DATE" />
+		<result column="login_end_time" property="loginEndTime"
+			jdbcType="DATE" />
+		<result column="creater" property="creater" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="DATE" />
+		<result column="updater" property="updater" jdbcType="VARCHAR" />
+		<result column="update_time" property="updateTime" jdbcType="DATE" />
+	</resultMap>
+	<sql id="Example_Where_Clause">
+		<where>
+			<foreach collection="oredCriteria" item="criteria" separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value} and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Update_By_Example_Where_Clause">
+		<where>
+			<foreach collection="example.oredCriteria" item="criteria"
+				separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value} and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Base_Column_List">
+		id, user_id, login_time, login_end_time, creater, create_time, updater,
+		update_time
+	</sql>
+	<select id="selectByExample" resultMap="BaseResultMap"
+		parameterType="com.xh.comm.entry.UserLoginInfoBeanExample">
+		select
+		<if test="distinct">
+			distinct
+		</if>
+		<include refid="Base_Column_List" />
+		from t_pub_user_login_info
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		<if test="orderByClause != null">
+			order by ${orderByClause}
+		</if>
+	</select>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from t_pub_user_login_info
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from t_pub_user_login_info
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<delete id="deleteByExample" parameterType="com.xh.comm.entry.UserLoginInfoBeanExample">
+		delete from t_pub_user_login_info
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</delete>
+	<insert id="insert" parameterType="com.xh.comm.entry.UserLoginInfoBean">
+		insert into t_pub_user_login_info (id, user_id, login_time,
+		login_end_time, creater, create_time,
+		updater, update_time)
+		values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=VARCHAR},
+		#{loginTime,jdbcType=DATE},
+		#{loginEndTime,jdbcType=DATE}, #{creater,jdbcType=VARCHAR}, #{createTime,jdbcType=DATE},
+		#{updater,jdbcType=VARCHAR}, #{updateTime,jdbcType=DATE})
+	</insert>
+	<insert id="insertSelective" parameterType="com.xh.comm.entry.UserLoginInfoBean">
+		insert into t_pub_user_login_info
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="loginTime != null">
+				login_time,
+			</if>
+			<if test="loginEndTime != null">
+				login_end_time,
+			</if>
+			<if test="creater != null">
+				creater,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="updater != null">
+				updater,
+			</if>
+			<if test="updateTime != null">
+				update_time,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="userId != null">
+				#{userId,jdbcType=VARCHAR},
+			</if>
+			<if test="loginTime != null">
+				#{loginTime,jdbcType=DATE},
+			</if>
+			<if test="loginEndTime != null">
+				#{loginEndTime,jdbcType=DATE},
+			</if>
+			<if test="creater != null">
+				#{creater,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=DATE},
+			</if>
+			<if test="updater != null">
+				#{updater,jdbcType=VARCHAR},
+			</if>
+			<if test="updateTime != null">
+				#{updateTime,jdbcType=DATE},
+			</if>
+		</trim>
+	</insert>
+	<select id="countByExample" parameterType="com.xh.comm.entry.UserLoginInfoBeanExample"
+		resultType="java.lang.Integer">
+		select count(*) from t_pub_user_login_info
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</select>
+	<update id="updateByExampleSelective" parameterType="map">
+		update t_pub_user_login_info
+		<set>
+			<if test="record.id != null">
+				id = #{record.id,jdbcType=INTEGER},
+			</if>
+			<if test="record.userId != null">
+				user_id = #{record.userId,jdbcType=VARCHAR},
+			</if>
+			<if test="record.loginTime != null">
+				login_time = #{record.loginTime,jdbcType=DATE},
+			</if>
+			<if test="record.loginEndTime != null">
+				login_end_time = #{record.loginEndTime,jdbcType=DATE},
+			</if>
+			<if test="record.creater != null">
+				creater = #{record.creater,jdbcType=VARCHAR},
+			</if>
+			<if test="record.createTime != null">
+				create_time = #{record.createTime,jdbcType=DATE},
+			</if>
+			<if test="record.updater != null">
+				updater = #{record.updater,jdbcType=VARCHAR},
+			</if>
+			<if test="record.updateTime != null">
+				update_time = #{record.updateTime,jdbcType=DATE},
+			</if>
+		</set>
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByExample" parameterType="map">
+		update t_pub_user_login_info
+		set id = #{record.id,jdbcType=INTEGER},
+		user_id = #{record.userId,jdbcType=VARCHAR},
+		login_time = #{record.loginTime,jdbcType=DATE},
+		login_end_time = #{record.loginEndTime,jdbcType=DATE},
+		creater = #{record.creater,jdbcType=VARCHAR},
+		create_time = #{record.createTime,jdbcType=DATE},
+		updater = #{record.updater,jdbcType=VARCHAR},
+		update_time = #{record.updateTime,jdbcType=DATE}
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByPrimaryKeySelective" parameterType="com.xh.comm.entry.UserLoginInfoBean">
+		update t_pub_user_login_info
+		<set>
+			<if test="userId != null">
+				user_id = #{userId,jdbcType=VARCHAR},
+			</if>
+			<if test="loginTime != null">
+				login_time = #{loginTime,jdbcType=DATE},
+			</if>
+			<if test="loginEndTime != null">
+				login_end_time = #{loginEndTime,jdbcType=DATE},
+			</if>
+			<if test="creater != null">
+				creater = #{creater,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=DATE},
+			</if>
+			<if test="updater != null">
+				updater = #{updater,jdbcType=VARCHAR},
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime,jdbcType=DATE},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.xh.comm.entry.UserLoginInfoBean">
+		update t_pub_user_login_info
+		set user_id = #{userId,jdbcType=VARCHAR},
+		login_time = #{loginTime,jdbcType=DATE},
+		login_end_time = #{loginEndTime,jdbcType=DATE},
+		creater = #{creater,jdbcType=VARCHAR},
+		create_time = #{createTime,jdbcType=DATE},
+		updater = #{updater,jdbcType=VARCHAR},
+		update_time = #{updateTime,jdbcType=DATE}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+</mapper>

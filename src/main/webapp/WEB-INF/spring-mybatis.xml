@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-4.0.xsd
+    http://www.springframework.org/schema/tx
+    http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+    http://www.springframework.org/schema/aop
+    http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+    http://www.springframework.org/schema/util 
+    http://www.springframework.org/schema/util/spring-util-4.0.xsd">
+
+
+	<!-- 慢SQL记录 -->
+	<bean id="stat-filter" class="com.alibaba.druid.filter.stat.StatFilter">
+		<property name="slowSqlMillis" value="3000" />
+		<property name="logSlowSql" value="true" />
+		<property name="mergeSql" value="true" />
+	</bean>
+
+	<bean id="log-filter" class="com.alibaba.druid.filter.logging.Log4jFilter">
+
+		<property name="dataSourceLogEnabled" value="false" />
+		<property name="connectionLogEnabled" value="false" />
+		<property name="connectionLogErrorEnabled" value="true" />
+
+		<property name="statementLogEnabled" value="false" />
+		<property name="statementLogErrorEnabled" value="true" />
+
+		<property name="resultSetLogEnabled" value="false" />
+		<property name="resultSetLogErrorEnabled" value="true" />
+
+		<property name="connectionConnectBeforeLogEnabled" value="false" />
+		<property name="connectionConnectAfterLogEnabled" value="false" />
+		<property name="connectionCommitAfterLogEnabled" value="false" />
+		<property name="connectionRollbackAfterLogEnabled" value="false" />
+		<property name="connectionCloseAfterLogEnabled" value="false" />
+
+		<property name="statementCreateAfterLogEnabled" value="false" />
+		<property name="statementPrepareAfterLogEnabled" value="false" />
+		<property name="statementPrepareCallAfterLogEnabled" value="false" />
+		<property name="statementExecuteAfterLogEnabled" value="false" />
+		<property name="statementExecuteQueryAfterLogEnabled" value="false" />
+		<property name="statementExecuteUpdateAfterLogEnabled" value="false" />
+		<property name="statementExecuteBatchAfterLogEnabled" value="false" />
+		<property name="statementCloseAfterLogEnabled" value="false" />
+		<property name="statementParameterSetLogEnabled" value="false" />
+		<property name="statementParameterClearLogEnable" value="false" />
+
+		<property name="resultSetNextAfterLogEnabled" value="false" />
+		<property name="resultSetOpenAfterLogEnabled" value="false" />
+		<property name="resultSetCloseAfterLogEnabled" value="false" />
+
+		<!-- <property name="statementExecutableSqlLogEnable" value="false" /> -->
+	</bean>
+
+	<!-- 基于SQL语义分析来实现防御SQL注入攻击的 -->
+	<bean id="wall-filter" class="com.alibaba.druid.wall.WallFilter">
+		<property name="dbType" value="oracle" />
+		<property name="config" ref="wall-config" />
+
+		<!-- 对被认为是攻击的SQL进行LOG.error输出 缺省false -->
+		<property name="logViolation" value="true" />
+		<!-- 对被认为是攻击的SQL抛出SQLExcepton 缺省 true -->
+		<property name="throwException" value="true" />
+	</bean>
+
+	<bean id="wall-config" class="com.alibaba.druid.wall.WallConfig">
+		<!-- 指定配置装载的目录 -->
+		<!-- <property name="dir" value="META-INF/druid/wall/oracle" /> -->
+		<!-- 是否允许非基本语句，缺省关闭，通过这个选项就能够屏蔽DDL -->
+		<property name="noneBaseStatementAllow" value="true" />
+		<!-- 是否允许一次执行多条语句，缺省关闭 -->
+		<property name="multiStatementAllow" value="true" />
+		<!-- 是否进行严格的语法检测是否进行严格的语法检测，Druid SQL Parser在某些场景不能覆盖所有的SQL语法，出现解析SQL出错，可以临时把这个选项设置为false，同时把SQL反馈给Druid的开发者 -->
+		<property name="strictSyntaxCheck" value="false" />
+	</bean>
+
+
+	<!-- 配置druid监控spring jdbc -->
+	<bean id="druid-stat-interceptor"
+		class="com.alibaba.druid.support.spring.stat.DruidStatInterceptor"></bean>
+
+
+	<bean id="druid-stat-pointcut" class="org.springframework.aop.support.JdkRegexpMethodPointcut"
+		scope="prototype">
+		<property name="patterns">
+			<list>
+				<value>com.xh.service.*.*</value>
+			</list>
+		</property>
+	</bean>
+	<aop:config proxy-target-class="true">
+		<aop:advisor advice-ref="druid-stat-interceptor"
+			pointcut-ref="druid-stat-pointcut" />
+	</aop:config>
+
+	<!-- 配置数据源5 客户mysql数据库 -->
+	<bean id="dataSource5" class="com.alibaba.druid.pool.DruidDataSource"
+		init-method="init" destroy-method="close" lazy-init="true">
+		<property name="url" value="${jdbc5.url}" />
+		<property name="username" value="${jdbc5.username}" />
+		<property name="password" value="${jdbc5.password}" />
+		<property name="driverClassName" value="${jdbc5.driverClassName}" />
+		<!-- 配置初始化大小、最小、最大 -->
+		<property name="initialSize" value="2" />
+		<property name="minIdle" value="10" />
+		<property name="maxActive" value="50" />
+		<!-- 配置获取连接等待超时的时间 -->
+		<property name="maxWait" value="60000" />
+		<!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+		<property name="timeBetweenEvictionRunsMillis" value="3000" />
+		<!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+		<property name="minEvictableIdleTimeMillis" value="300000" />
+
+		<!-- <property name="validationQuery" value="select sysdate from dual" 
+			/> -->
+		<property name="testWhileIdle" value="true" />
+		<property name="testOnBorrow" value="false" />
+		<property name="testOnReturn" value="false" />
+		<!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
+		<property name="poolPreparedStatements" value="true" />
+		<property name="maxPoolPreparedStatementPerConnectionSize"
+			value="20" />
+		<!-- 定期将监控日志输出到日志文件中，单位是毫秒。 -->
+		<property name="timeBetweenLogStatsMillis" value="300000" />
+
+		<!-- 配置监控统计拦截的filters，去掉后监控界面sql无法统计 ,filters是字符串别名，proxyFilters是类。 -->
+		<property name="proxyFilters">
+			<list>
+				<ref bean="stat-filter" />
+				<ref bean="log-filter" />
+				<ref bean="wall-filter" />
+			</list>
+		</property>
+	</bean>
+
+	<!-- mybatis文件配置，扫描所有mapper文件 -->
+	<bean id="sqlSessionFactory5" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource5" />
+		<property name="mapperLocations" value="classpath:com/xh/mapper/*.xml" />
+		<property name="configLocation" value="classpath:mybatis-config.xml"></property>
+	</bean>
+
+	<!-- spring与mybatis整合配置，扫描所有dao -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<!-- 指定扫描的包名 如果扫描多个包，每个包中间使用半角逗号分隔 -->
+		<property name="basePackage" value="com.xh.dao" />
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory5" />
+	</bean>
+
+	<!-- 配置事务管理器 -->
+	<bean id="transactionManager5"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource5" />
+	</bean>
+	<!-- 全注解方式 -->
+	<tx:annotation-driven transaction-manager="transactionManager5" />
+
+
+
+</beans>

@@ -1,0 +1,122 @@
+<table id="editMenuTable"></table>
+<div id="editMenu"></div>
+
+<script type="text/javascript">
+	//当写错时发现有变量污染的情况，建议用模块模式
+(function(){
+	var columns = [{
+		field:'menuName',
+		title:'菜单名'
+	},{
+		field:'menuUrl',
+		title:'菜单url',
+	},{
+		field:'sortKey',
+		title:'排序序号'
+	},{
+		field:'menuParentId',
+		title:'父节点'
+	},{
+		field:'menuDesc',
+		title:'菜单描述'
+	},{
+		field:'menuIconUrl',
+		title:'样式'
+	},{
+		field:'menuId',
+		title:"ID",
+		visible:false
+	},{
+		field:'operate',
+		title:'操作',
+		formatter:function(v,r){
+			return "<a class='btn btn-default' onclick=\"editMenu(\'"+r.menuId+"\')\">修改</a>";
+		}
+	}];
+
+	XHUtils.ajax({
+		url:XHUtils.COMMURL+"getMenuList.do",
+		callBackFun:function(data){
+			console.log(data);
+			XHUtils.createTable('editMenuTable',{columns:columns,data:JSON.parse(data[XHUtils.JSON])});
+		}
+	});
+
+	var html = XHUtils.hereJs(function(){
+		var temDataForm = [{
+			tempName:'formTemplate',
+			data:{
+				id:'modalForm',
+				list:[{
+				label: '菜单名',
+				name: 'menuName',
+				type: 'text'
+			}, {
+				label: '菜单Url',
+				name: 'menuUrl',
+				type: 'text'
+			}, {
+				label: '排序序号',
+				name: 'sortKey',
+				type: 'number'
+			}, {
+				label: '树',
+				name: 'menuParentId',
+				type: 'text'
+			}, {
+				label: '菜单描述',
+				name: 'menuDesc',
+				type: 'textarea'
+			}, {
+				label: '样式',
+				name: 'menuIconUrl',
+				type: 'text'
+			},{
+				label:'id',
+				name:'menuId',
+				type:'hidden'
+			}]
+			}
+		}];
+		XHUtils.template('editMenuBody',temDataForm);
+	});
+
+	var temDataModal = {
+		tempName:'modalTem',
+		data:{
+			id:'modalEditMenu',
+			bodyId:'editMenuBody',
+			saveId:'editMenuSave',
+			content:html
+		}
+	};
+	var callBFModal = function(){
+		$('#editMenuSave').on('click',function(){
+			XHUtils.ajax({
+				url:XHUtils.COMMURL+'updateMenu.do',
+				data:XHUtils.convertStringJson('modalForm'),
+				callBackFun:function(data){
+					$('#modalEditMenu').modal('hide');
+
+					
+				}
+			})
+		});
+	};
+	XHUtils.template('editMenu',temDataModal,callBFModal);
+
+	
+})();
+
+function editMenu(id){
+		XHUtils.ajax({
+					url:XHUtils.COMMURL+"getMenuForOne.do",
+					data:JSON.stringify({menuId:id}),
+					callBackFun:function(data){
+						XHUtils.setFormData(data,);
+					}
+				}); 
+		$('#modalEditMenu').modal();
+	
+	}
+</script>

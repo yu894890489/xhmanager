@@ -1,0 +1,179 @@
+/**
+ *变量名nav
+ */
+/**
+     * nav的背景色
+ */
+/**
+     * nav字体颜色
+ */
+/**
+     * 每个li的hover色
+ */
+/**
+     * nav的宽度
+ */
+/**
+     * li的宽度
+ */
+/**
+     * 指定一级菜单有几个
+ */
+/**
+     * 大的border颜色
+ */
+/**
+     * 悬浮的border颜色
+ */
+/**
+ * 头部变量名
+ */
+/**
+ * head bg的颜色
+ * @type {[type]}
+ */
+/**
+ * 以下都是为了简化css名称
+ */
+/**
+ * 组织树的样式变量
+ */
+/**
+ * 生成多级组织树样式
+ * @param  {[type]} @n          [description]
+ * @param  {[type]} @i:         2             [description]
+ * @param  {[type]} @inti:18px) when          (@i           [description]
+ * @return {[type]}             [description]
+ */
+/**
+     * 所有li的公共样式function
+ */
+/**
+     * 生成多个li如： .generate-sort-list(5);
+ */
+.navbar-side {
+  z-index: 0;
+}
+.navbar-side .nav > li > a > i {
+  color: #404040;
+  padding: 8px;
+  width: 1.11111111%;
+  text-align: center;
+}
+.navbar-side {
+  z-index: 1;
+  position: fixed;
+  width: 10%;
+  top: 80px;
+}
+.arrow {
+  float: right;
+  margin-top: 8px;
+}
+.icon-fa.arrow:before {
+  content: "\f104";
+}
+.active > a > .icon-fa.arrow:before {
+  content: "\f107";
+}
+.nav-2-level li {
+  border-bottom: none !important;
+}
+.nav-2-level li a {
+  padding-left: 37px;
+}
+.nav-3-level li {
+  border-bottom: none !important;
+}
+.nav-3-level li a {
+  padding-left: 62px;
+}
+.nav-4-level li {
+  border-bottom: none !important;
+}
+.nav-4-level li a {
+  padding-left: 87px;
+}
+.nav-5-level li {
+  border-bottom: none !important;
+}
+.nav-5-level li a {
+  padding-left: 112px;
+}
+.nav-6-level li {
+  border-bottom: none !important;
+}
+.nav-6-level li a {
+  padding-left: 137px;
+}
+.nav-second-level li,
+.nav-third-level li,
+.nav-four-level li {
+  border-bottom: none !important;
+}
+.nav-second-level li a {
+  padding-left: 37px;
+}
+.nav-third-level li a {
+  padding-left: 55px;
+}
+.nav-four-level li a {
+  padding-left: 73px;
+}
+.sidebar-collapse,
+.sidebar-collapse .nav {
+  background: none;
+}
+.sidebar-collapse .nav {
+  padding: 0;
+}
+.click-bg {
+  background-color: #c8c8c8 !important;
+}
+.sidebar-collapse .nav > li > a {
+  color: #404040;
+  text-shadow: none;
+}
+.sidebar-collapse > .nav > li > a {
+  padding: 12px 10px;
+}
+.sidebar-collapse > .nav > li {
+  border-bottom: 1px solid rgba(107, 108, 109, 0.19);
+}
+ul.nav.nav-second-level.collapse.in {
+  background: #131212;
+}
+.sidebar-collapse .nav > li > a:hover,
+.sidebar-collapse .nav > li > a:focus {
+  outline: 0;
+}
+.navbar-side {
+  border: none;
+  background: #e5e5e5;
+}
+.navbar-side a:hover,
+.navbar-side a:hover i {
+  color: #568fcc !important;
+}
+.navbar-default {
+  border: 0px solid black;
+}
+.nav > li > a > i {
+  margin-right: 10px;
+  color: #f09b22;
+}
+@media (min-width: 768px) {
+  .navbar-side {
+    width: 10%;
+    z-index: 1;
+  }
+  .navbar {
+    border-radius: 0px;
+  }
+}
+@media (min-width: 368px) {
+  .navbar-side {
+    width: 20%;
+    z-index: 1;
+  }
+}

@@ -1,0 +1,49 @@
+<table id="roleList"></table>
+
+<script type="text/javascript">
+	var columns = [
+    {
+        "field": "roleDesc",
+        "title": "roleDesc"
+    },
+    {
+        "field": "roleGrade",
+        "title": "roleGrade"
+    },
+    {
+        "field": "roleId",
+        "title": "roleId"
+    },{
+        "field": "roleName",
+        "title": "roleName"
+    },
+    {
+        "field": "updateTime",
+        "title": "updateTime",
+        formatter:function(v){
+        	return v?XHUtils.formatterDate(v):"-";
+        }
+    },
+    {
+        "field": "updater",
+        "title": "updater"
+    },
+    {
+        "field": "creater",
+        "title": "creater"
+    },
+    {
+        "field": "createTime",
+        "title": "createTime",
+        formatter:function(v){
+        	return v?XHUtils.formatterDate(v):"-";
+        }
+    }
+];
+	XHUtils.ajax({
+		url:XHUtils.COMMURL+'getRoleList.do',
+		callBackFun:function(data){
+			XHUtils.createTable('roleList',{columns:columns,data:JSON.parse(data[XHUtils.JSON])});
+		}
+	});
+</script>

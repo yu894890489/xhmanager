@@ -1,0 +1,37 @@
+<div id="formForRole"></div>
+
+<script type="text/javascript">
+	var temData=[{
+		tempName:'formTem',
+		data:{
+			id:'addRoleForm',
+			list:[{
+				name:'roleName',
+				label:'roleName'
+			},{
+				name:'roleDesc',
+				label:'roleDesc'
+			}]
+		}
+	},{
+		tempName:'btnTemplate',
+		data:{
+			list:[{
+				id:'roleSubmit',
+				label:XHUtils.SUBMIT
+			}]
+		}
+	}];
+	var callBF = function () {
+		$('#roleSubmit').on('click',function(){
+          XHUtils.ajax({
+          	url:XHUtils.COMMURL+'addRole.do',
+          	data:XHUtils.convertStringJson('addRoleForm'),
+          	callBackFun:function(data){
+          		hashchangeUrl();
+          	}
+          })
+		});
+	}
+	XHUtils.template('formForRole',temData,callBF);
+</script>

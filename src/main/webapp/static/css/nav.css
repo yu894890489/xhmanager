@@ -1,0 +1,127 @@
+/**
+ *变量名nav
+ */
+/**
+     * nav的背景色
+ */
+/**
+     * nav字体颜色
+ */
+/**
+     * 每个li的hover色
+ */
+/**
+     * nav的宽度
+ */
+/**
+     * li的宽度
+ */
+/**
+     * 指定一级菜单有几个
+ */
+/**
+     * 大的border颜色
+ */
+/**
+     * 悬浮的border颜色
+ */
+/**
+     * 所有li的公共样式function
+ */
+/**
+     * 生成多个li如： .generate-sort-list(5);
+ */
+* {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+a {
+  color: #333333;
+  text-decoration: none;
+  outline: none;
+  /*blr:expression(this.onFocus=this.blur());*/
+}
+.sort .sort-ti,
+.sort .sort-list li.hover,
+.sort .sort-list ul li.hover {
+  background-color: #1e90ff;
+}
+.sort {
+  width: 20%;
+  height: auto;
+  float: left;
+  position: relative;
+  z-index: 20;
+}
+.sort .sort-ti {
+  height: 37px;
+  font: 14px/35px "microsoft yahei";
+  color: #fff;
+  padding-left: 30px;
+}
+.sort .sort-list {
+  border: 2px solid #e5e5e5;
+  border-top: 0;
+  height: 315px;
+  padding: 0 1px;
+  background-color: #fafafa;
+}
+.sort .sort-list ul {
+  height: 20%;
+}
+.sort .sort-list li {
+  padding: 0 5px;
+  width: 98%;
+  height: 39px;
+  float: left;
+}
+.sort .sort-list li a {
+  display: block;
+  height: 37px;
+  line-height: 37px;
+  font-size: 14px;
+  border-top: 1px solid #fff;
+  border-bottom: 1px solid #f1f0f0;
+  padding-left: 30%;
+  cursor: pointer;
+}
+.sort .sort-list li a span {
+  display: block;
+  height: 37px;
+  background-position: right -80px;
+}
+.sort .sort-list li.hover a {
+  color: #ffffff;
+}
+.sort .sort-list ul ul {
+  display: none;
+}
+.sort .sort-list ul li.hover ul {
+  background-color: #fff;
+  border: 2px solid #e9e9e9;
+  left: 160px;
+  margin-top: -38px;
+  width: 120px;
+  z-index: 30;
+  position: absolute;
+  height: auto;
+  overflow: hidden;
+}
+.sort .sort-list ul li.hover ul li {
+  height: 27px;
+  padding: 0;
+}
+.sort .sort-list ul li.hover ul {
+  display: block;
+}
+.sort .sort-list ul li.hover ul li a {
+  height: 27px;
+  line-height: 27px;
+  font-size: 12px;
+  border-top: 0;
+  border-bottom: 0;
+  padding-left: 30px;
+  color: #333;
+}
+

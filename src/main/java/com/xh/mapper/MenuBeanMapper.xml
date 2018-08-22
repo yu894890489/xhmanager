@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xh.dao.MenuBeanMapper" >
+  <resultMap id="BaseResultMap" type="com.xh.comm.entry.MenuBean" >
+    <id column="MENU_ID" property="menuId" jdbcType="VARCHAR" />
+    <result column="MENU_NAME" property="menuName" jdbcType="VARCHAR" />
+    <result column="MENU_PARENT_ID" property="menuParentId" jdbcType="VARCHAR" />
+    <result column="IS_LEAF" property="isLeaf" jdbcType="VARCHAR" />
+    <result column="MENU_URL" property="menuUrl" jdbcType="VARCHAR" />
+    <result column="MENU_ICON_URL" property="menuIconUrl" jdbcType="VARCHAR" />
+    <result column="MENU_ICON_LIGHT_UTL" property="menuIconLightUtl" jdbcType="VARCHAR" />
+    <result column="MENU_DESC" property="menuDesc" jdbcType="VARCHAR" />
+    <result column="SORT_KEY" property="sortKey" jdbcType="INTEGER" />
+    <result column="RECORD_ID" property="recordId" jdbcType="VARCHAR" />
+    <result column="CREATER" property="creater" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATER" property="updater" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="IS_DELETE" property="isDelete" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    MENU_ID, MENU_NAME, MENU_PARENT_ID, IS_LEAF, MENU_URL, MENU_ICON_URL, MENU_ICON_LIGHT_UTL, 
+    MENU_DESC, SORT_KEY, RECORD_ID, CREATER, CREATE_TIME, UPDATER, UPDATE_TIME, IS_DELETE
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.xh.comm.entry.MenuBeanExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_pub_menu
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_pub_menu
+    where MENU_ID = #{menuId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_pub_menu
+    where MENU_ID = #{menuId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.xh.comm.entry.MenuBeanExample" >
+    delete from t_pub_menu
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.xh.comm.entry.MenuBean" >
+    insert into t_pub_menu (MENU_ID, MENU_NAME, MENU_PARENT_ID, 
+      IS_LEAF, MENU_URL, MENU_ICON_URL, 
+      MENU_ICON_LIGHT_UTL, MENU_DESC, SORT_KEY, 
+      RECORD_ID, CREATER, CREATE_TIME, 
+      UPDATER, UPDATE_TIME, IS_DELETE
+      )
+    values (#{menuId,jdbcType=VARCHAR}, #{menuName,jdbcType=VARCHAR}, #{menuParentId,jdbcType=VARCHAR}, 
+      #{isLeaf,jdbcType=VARCHAR}, #{menuUrl,jdbcType=VARCHAR}, #{menuIconUrl,jdbcType=VARCHAR}, 
+      #{menuIconLightUtl,jdbcType=VARCHAR}, #{menuDesc,jdbcType=VARCHAR}, #{sortKey,jdbcType=INTEGER}, 
+      #{recordId,jdbcType=VARCHAR}, #{creater,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updater,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{isDelete,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.xh.comm.entry.MenuBean" >
+    insert into t_pub_menu
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="menuId != null" >
+        MENU_ID,
+      </if>
+      <if test="menuName != null" >
+        MENU_NAME,
+      </if>
+      <if test="menuParentId != null" >
+        MENU_PARENT_ID,
+      </if>
+      <if test="isLeaf != null" >
+        IS_LEAF,
+      </if>
+      <if test="menuUrl != null" >
+        MENU_URL,
+      </if>
+      <if test="menuIconUrl != null" >
+        MENU_ICON_URL,
+      </if>
+      <if test="menuIconLightUtl != null" >
+        MENU_ICON_LIGHT_UTL,
+      </if>
+      <if test="menuDesc != null" >
+        MENU_DESC,
+      </if>
+      <if test="sortKey != null" >
+        SORT_KEY,
+      </if>
+      <if test="recordId != null" >
+        RECORD_ID,
+      </if>
+      <if test="creater != null" >
+        CREATER,
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME,
+      </if>
+      <if test="updater != null" >
+        UPDATER,
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME,
+      </if>
+      <if test="isDelete != null" >
+        IS_DELETE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="menuId != null" >
+        #{menuId,jdbcType=VARCHAR},
+      </if>
+      <if test="menuName != null" >
+        #{menuName,jdbcType=VARCHAR},
+      </if>
+      <if test="menuParentId != null" >
+        #{menuParentId,jdbcType=VARCHAR},
+      </if>
+      <if test="isLeaf != null" >
+        #{isLeaf,jdbcType=VARCHAR},
+      </if>
+      <if test="menuUrl != null" >
+        #{menuUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="menuIconUrl != null" >
+        #{menuIconUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="menuIconLightUtl != null" >
+        #{menuIconLightUtl,jdbcType=VARCHAR},
+      </if>
+      <if test="menuDesc != null" >
+        #{menuDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="sortKey != null" >
+        #{sortKey,jdbcType=INTEGER},
+      </if>
+      <if test="recordId != null" >
+        #{recordId,jdbcType=VARCHAR},
+      </if>
+      <if test="creater != null" >
+        #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updater != null" >
+        #{updater,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.xh.comm.entry.MenuBeanExample" resultType="java.lang.Integer" >
+    select count(*) from t_pub_menu
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_pub_menu
+    <set >
+      <if test="record.menuId != null" >
+        MENU_ID = #{record.menuId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.menuName != null" >
+        MENU_NAME = #{record.menuName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.menuParentId != null" >
+        MENU_PARENT_ID = #{record.menuParentId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isLeaf != null" >
+        IS_LEAF = #{record.isLeaf,jdbcType=VARCHAR},
+      </if>
+      <if test="record.menuUrl != null" >
+        MENU_URL = #{record.menuUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.menuIconUrl != null" >
+        MENU_ICON_URL = #{record.menuIconUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.menuIconLightUtl != null" >
+        MENU_ICON_LIGHT_UTL = #{record.menuIconLightUtl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.menuDesc != null" >
+        MENU_DESC = #{record.menuDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sortKey != null" >
+        SORT_KEY = #{record.sortKey,jdbcType=INTEGER},
+      </if>
+      <if test="record.recordId != null" >
+        RECORD_ID = #{record.recordId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.creater != null" >
+        CREATER = #{record.creater,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updater != null" >
+        UPDATER = #{record.updater,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null" >
+        UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.isDelete != null" >
+        IS_DELETE = #{record.isDelete,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_pub_menu
+    set MENU_ID = #{record.menuId,jdbcType=VARCHAR},
+      MENU_NAME = #{record.menuName,jdbcType=VARCHAR},
+      MENU_PARENT_ID = #{record.menuParentId,jdbcType=VARCHAR},
+      IS_LEAF = #{record.isLeaf,jdbcType=VARCHAR},
+      MENU_URL = #{record.menuUrl,jdbcType=VARCHAR},
+      MENU_ICON_URL = #{record.menuIconUrl,jdbcType=VARCHAR},
+      MENU_ICON_LIGHT_UTL = #{record.menuIconLightUtl,jdbcType=VARCHAR},
+      MENU_DESC = #{record.menuDesc,jdbcType=VARCHAR},
+      SORT_KEY = #{record.sortKey,jdbcType=INTEGER},
+      RECORD_ID = #{record.recordId,jdbcType=VARCHAR},
+      CREATER = #{record.creater,jdbcType=VARCHAR},
+      CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      UPDATER = #{record.updater,jdbcType=VARCHAR},
+      UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      IS_DELETE = #{record.isDelete,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xh.comm.entry.MenuBean" >
+    update t_pub_menu
+    <set >
+      <if test="menuName != null" >
+        MENU_NAME = #{menuName,jdbcType=VARCHAR},
+      </if>
+      <if test="menuParentId != null" >
+        MENU_PARENT_ID = #{menuParentId,jdbcType=VARCHAR},
+      </if>
+      <if test="isLeaf != null" >
+        IS_LEAF = #{isLeaf,jdbcType=VARCHAR},
+      </if>
+      <if test="menuUrl != null" >
+        MENU_URL = #{menuUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="menuIconUrl != null" >
+        MENU_ICON_URL = #{menuIconUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="menuIconLightUtl != null" >
+        MENU_ICON_LIGHT_UTL = #{menuIconLightUtl,jdbcType=VARCHAR},
+      </if>
+      <if test="menuDesc != null" >
+        MENU_DESC = #{menuDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="sortKey != null" >
+        SORT_KEY = #{sortKey,jdbcType=INTEGER},
+      </if>
+      <if test="recordId != null" >
+        RECORD_ID = #{recordId,jdbcType=VARCHAR},
+      </if>
+      <if test="creater != null" >
+        CREATER = #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updater != null" >
+        UPDATER = #{updater,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null" >
+        IS_DELETE = #{isDelete,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where MENU_ID = #{menuId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xh.comm.entry.MenuBean" >
+    update t_pub_menu
+    set MENU_NAME = #{menuName,jdbcType=VARCHAR},
+      MENU_PARENT_ID = #{menuParentId,jdbcType=VARCHAR},
+      IS_LEAF = #{isLeaf,jdbcType=VARCHAR},
+      MENU_URL = #{menuUrl,jdbcType=VARCHAR},
+      MENU_ICON_URL = #{menuIconUrl,jdbcType=VARCHAR},
+      MENU_ICON_LIGHT_UTL = #{menuIconLightUtl,jdbcType=VARCHAR},
+      MENU_DESC = #{menuDesc,jdbcType=VARCHAR},
+      SORT_KEY = #{sortKey,jdbcType=INTEGER},
+      RECORD_ID = #{recordId,jdbcType=VARCHAR},
+      CREATER = #{creater,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      UPDATER = #{updater,jdbcType=VARCHAR},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      IS_DELETE = #{isDelete,jdbcType=VARCHAR}
+    where MENU_ID = #{menuId,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,4 @@
+1.改动generatorConfig.xml  （jar包地址 数据库配置）注释1和注释2
+2.在generatorConfig.xml修改表名和bean的名字 注意不是添加 （如果多个可以添加）如果项目中有了的实体，其会更新这个 要小心  会替换掉原来的Bean甚至Mapper 
+3.cmd java -jar mybatis-generator-core-1.3.2.jar -configfile generatorConfig.xml -overwrite
+4.完成

@@ -1,0 +1,105 @@
+<div id="addOrg"></div>
+<link rel="stylesheet" type="text/css" href="/static/css/easyui.css">
+<script type="text/javascript" src="/static/js/jquery.easyui.min.js"></script>
+<script type="text/javascript">
+(function(){
+		var temData = [{
+            tempName:"formTem",
+            data:{
+            	id:'addOrgForm',
+            	list:[{
+            		name:'orgName',
+            		type:'text',
+            		label:'组织名称',
+            		custom:'required'
+            	},{
+            		label:'上级组织',
+            		type:'text',
+            		name:'orgParentId'
+            	},{
+            		label:'组织代码',
+            		type:'text',
+            		name:'orgCode',
+            		custom:'required'
+            	},{
+            		label:'组织图标',
+            		type:'text',
+            		name:'orgImg'
+            	},{
+            		label:'组织网站',
+            		type:'text',
+            		name:'orgWebsite'
+            	},{
+            		label:'组织Email',
+            		type:'email',
+            		name:'orgEmail'
+            	},{
+            		label:'组织电话',
+            		type:'text',
+            		name:'orgPhone'
+            	},{
+            		label:'排序序号',
+            		type:'number',
+            		name:'sortKey',
+            		custom:'required'
+            	},{
+            		label:'机构地址',
+            		type:'text',
+            		name:'orgAddress'
+            	},{
+            		label:'组织描述',
+            		type:'textarea',
+            		name:'orgDesc'
+            	}]
+            }
+	},{
+		tempName:'btnTemplate',
+		data:{
+			list:[{
+				id:'addOrgBtn',
+				label:XHUtils.SUBMIT
+			}]
+		}
+	}];
+	var callBF = function(){
+		var validConf = 
+		$('#orgParentId').combotree({
+			editable: false,
+			textField: 'orgName',
+			valueField: 'orgId'
+		});
+		XHUtils.ajax({
+			url:XHUtils.COMMURL+'getOrgTree.do',
+			callBackFun:function(data){
+				var jsonStr = data[XHUtils.JSON];
+				var list = JSON.parse(jsonStr.replace(/orgId/g, 'id').replace(/orgName/g, 'text'));
+				if(list.length <= 0) {
+					list = [{
+						id: '0',
+						text: '暂未数据'
+					}]
+				}
+				$('#orgParentId').combotree({
+					data: list
+				});
+			}
+		});
+
+
+		$('#addOrgBtn').on('click',function(){
+			debugger
+			if(!XHUtils.isValid('addOrgForm'))return;
+			XHUtils.ajax({
+				url:XHUtils.COMMURL+'addOrg.do',
+				data:XHUtils.convertStringJson('addOrgForm'),
+				callBackFun:function(data){
+					console.log(data);
+					refresh();
+				}
+			});
+		});
+	};
+	XHUtils.template('addOrg',temData,callBF);
+
+})()
+</script>

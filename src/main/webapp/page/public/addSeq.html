@@ -1,0 +1,80 @@
+<div id="addSeq"></div>
+
+<script type="text/javascript">
+	var temData = [{
+         tempName:'formTemplate',
+         data:{
+         	id:'addSeqForm',
+         	classes:' col-lg-6 col-lg-offset-3 ',
+         list:[{
+         	label:'序列号',
+         	name:'code',
+         	type:'text',
+         	inputClassese:'col-lg-5',
+            custom:'maxlength=3 required=true'
+         },{
+         	label:'最小编号',
+         	name:'curNum',
+         	type:'number',
+         	inputClassese:'col-lg-5',
+            custom:'required=true'
+         },{
+         	label:'最大编号',
+         	name:'maxNum',
+         	type:'number',
+         	inputClassese:'col-lg-5',
+            custom:'required=true'
+         },{
+         	label:'项目编码',
+         	name:'projectName',
+         	type:'text',
+         	defaults:XHUtils.xh,
+         	custom:'disabled=true'
+         }]
+         }
+		},{
+			tempName:'btnTemplate',
+			data:{
+
+				list:[{
+				id:'addSeqSubmit',
+				label:XHUtils.SUBMIT,
+				classes:'btn-success col-lg-offset-6'
+			}]
+			}
+		}];
+		var callBF = function (){
+            var config = {
+                fields:{
+                    code:{
+                        threshold: 2,
+                        validators:{
+                            notEmpty:{
+                                message:'快把朕给填上！ (:'
+                            },
+                            remote:{
+                                message:'重名了，请换下',
+                                url:XHUtils.COMMURL+'getSeq.do',
+                                data:JSON.stringify({code:$("#code").val()})
+                            }
+                        }
+                    }
+                }
+            };
+            XHUtils.valid('addSeqForm',config);
+            $("#addSeqSubmit").on('click',function(){
+                console.log(XHUtils.isValid('addSeqForm'));
+                if(!XHUtils.isValid('addSeqForm')) return;
+                XHUtils.ajax({
+                	url:XHUtils.COMMURL+'addSeq.do',
+                	data:XHUtils.convertStringJson('addSeqForm'),
+                	callBackFun:function(data){
+                            refresh();
+                	}
+                })
+            });
+
+		};
+		XHUtils.template('addSeq',temData,callBF);
+		
+</script>

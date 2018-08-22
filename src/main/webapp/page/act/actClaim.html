@@ -1,0 +1,65 @@
+<div id="groupFormDiv"></div>
+<table id="processList"></table>
+<script type="text/javascript">
+	
+
+
+	var btnId = 'searchBtn';
+	var temData = [{
+			tempName:'formTemplate',
+			data:{
+				list:[{
+					label:'分组名称',
+					type:'text',
+					name:'group'
+				}]
+			}
+		},{
+			tempName:'btnTemplate',
+			data:{
+				list:[{
+					classes:'col-lg-offset-5 icon-search btn-success margin-bottom-15',
+					id:btnId,
+					label:'查询'
+				}]
+			}
+		}];
+	var blindClick = function(){
+		$('#'+btnId).on('click',function(){
+			XHUtils.ajax({
+				url:XHUtils.COMMURL+'act/processList.do',
+				data:JSON.stringify({group:$('#group').val()}),
+				callBackFun:function(data){
+					$('#processList').bootstrapTable('load',JSON.parse(data[XHUtils.JSON]));
+				}
+			})
+		})
+	}
+	
+
+	var columns = [{"field":"processDefinitionId","title":"processDefinitionId"},{"field":"processInstanceId","title":"processInstanceId"},{"field":"suspensionState","title":"suspensionState"},{"field":"priority","title":"priority"},{"field":"suspended","title":"suspended"},{"field":"revision","title":"revision"},{"field":"executionId","title":"executionId"},{"field":"taskDefinitionKey","title":"taskDefinitionKey"},{"field":"deleted","title":"deleted"},{"field":"createTime","title":"createTime",formatter:function(v){return XHUtils.formatterDate(v)}},{"field":"name","title":"name"},{"field":"tenantId","title":"tenantId"},{"field":"revisionNext","title":"revisionNext"},{"field":"id","title":"id"},{field:'claim',title:'认领',formatter:function(v,r){return '<button class="btn btn-default" onclick="claim(\''+r.id+'\')">认领</button>'}}];
+	function createTable(group){
+		XHUtils.ajax({
+		url:XHUtils.COMMURL+'act/processList.do',
+		data:JSON.stringify({group:group}),
+		callBackFun:function(data){
+			XHUtils.createTable('processList',{columns:columns,data:JSON.parse(data[XHUtils.JSON])});
+		}
+	})
+	}
+	
+	function claim(v){
+		XHUtils.ajax({
+			data:JSON.stringify({taskId:v}),
+			url:XHUtils.COMMURL+'act/claim.do',
+			callBackFun:function(data){
+				console.log(data);
+				alert(data.msg);
+			}
+		})
+	}
+
+
+	createTable("yy");
+	XHUtils.template('groupFormDiv',temData,blindClick);
+</script>

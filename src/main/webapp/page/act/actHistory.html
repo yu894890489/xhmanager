@@ -1,0 +1,17 @@
+<table id="historyList"></table>
+
+
+<script type="text/javascript">
+	var columns = [{"field":"processInstanceId","title":"processInstanceId"},{"field":"processDefinitionId","title":"processDefinitionId"},{"field":"durationInMillis","title":"durationInMillis"},{"field":"activityName","title":"activityName"},{"field":"executionId","title":"executionId"},{"field":"activityId","title":"activityId"},{"field":"tenantId","title":"tenantId"},{"field":"startTime","title":"startTime",formatter:function(v){ return XHUtils.formatterDate(v);}},{"field":"time","title":"time",formatter:function(v){ return XHUtils.formatterDate(v);}},{"field":"id","title":"id"},{"field":"endTime","title":"endTime",formatter:function(v){ return XHUtils.formatterDate(v);}},{"field":"activityType","title":"activityType"}];
+
+	XHUtils.ajax({
+		url:XHUtils.COMMURL+'act/history.do',
+		callBackFun:function(data){
+			console.log(data);
+			XHUtils.createTable('historyList',{data:JSON.parse(data[XHUtils.JSON]),columns:columns});
+		}
+	});
+
+
+
+</script>

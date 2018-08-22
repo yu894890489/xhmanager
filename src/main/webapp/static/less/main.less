@@ -1,0 +1,70 @@
+@import "variable";
+//@import "static/bootstrap/less/bootstrap/less/bootstrap"
+/**
+ * 公共样式
+ */
+.no-padding-left{
+	@{p-}left:0px;
+}
+.no-padding-right{
+	@{p-}right:0px;
+}
+.no-padding{
+	.no-padding-left;
+	.no-padding-right;
+}
+.@{m-}bottom-15{
+	@{m-}bottom: 15px;
+}
+.@{m-}top-15{
+	@{m-}top:15px;
+}
+.@{m-}left-15{
+	@{m-}left:15px;
+}
+.@{m-}right-15{
+	@{m-}right:15px;
+}
+.@{m-}bottom-30{
+	@{m-}bottom: 15px * 2;
+}
+.@{m-}top-30{
+	@{m-}top:15px * 2;
+}
+.@{m-}left-30{
+	@{m-}left:15px * 2;
+}
+.@{m-}right-30{
+	@{m-}right:15px * 2;
+}
+.hidden{
+    display: none;
+}
+
+/**
+ * head样式
+ */
+.@{head}-bg{
+	@{bg}-color:@head-bg-color;
+}
+.@{head}-border{
+	border:1px solid @head-border-color;
+}
+.@{head}-img{
+	background-image: url('http://www.xinhuasoft.cn/tpl/xinhuasoft/Public/images/logo.png');
+	height:50px;
+	width: 145px;
+}
+.reorder-35{
+	font-size: 35px;
+}
+
+/**
+ * tree的样式
+ */
+.tree{
+	.margin-left-15;
+	div{
+		.margin-left-15;
+	} 
+}

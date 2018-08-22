@@ -1,0 +1,32 @@
+<table id="userListTable"></table>
+
+<script type="text/javascript">
+
+var columns = [{
+	title:'用户名',
+	field:'username'
+},{
+	title:'手机号',
+	field:'phone'
+},{
+	title:'邮箱',
+	field:'email'
+},{
+	title:'用户角色',
+	field:'roleId',
+	formatter:function(v,r){
+		return r.roleName;
+	}
+},{
+	title:'roleName',
+	visible:false
+},]; 
+    XHUtils.ajax({
+    	url:XHUtils.COMMURL+'getUserList.do',
+    	callBackFun:function(data){
+    		console.log(data);
+			XHUtils.createTable('userListTable',{columns:columns,data:JSON.parse(data[XHUtils.JSON])});
+    	}
+    })
+
+</script>

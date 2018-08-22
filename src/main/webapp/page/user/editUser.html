@@ -1,0 +1,172 @@
+<div id="searchbox"></div>
+<table id="editUser"></table>
+<!--用户列表  -->
+<div id="editMenu"></div>
+<!-- 弹窗容器 -->
+<link rel="stylesheet" type="text/css" href="/static/css/easyui.css">
+<script type="text/javascript" src="/static/js/jquery.easyui.min.js"></script>
+<script>
+/*  
+ * 搜索框模板
+ *
+ */
+
+var btnId = 'searchBtn';
+var temData = [{
+		tempName:'formTemplate',
+		data:{
+			list:[{
+				label:'查询条件',
+				type:'text',
+				name:'group'
+			}]
+		}
+	},{
+		tempName:'btnTemplate',
+		data:{
+			list:[{
+				classes:'col-lg-offset-5 icon-search btn-success margin-bottom-15',
+				id:btnId,
+				label:'查询'
+			}]
+		}
+	}];
+var blindClick = function(){
+	$('#'+btnId).on('click',function(){
+	alert(1);
+	})
+}
+
+/* 
+ * 用户列表模板
+ *
+*/
+var columns = [{
+	title:'用户名',
+	field:'username'
+},{
+	title:'手机号',
+	field:'phone'
+},{
+	title:'邮箱',
+	field:'email'
+},{
+	title:'用户角色',
+	field:'roleId',
+	formatter:function(v,r){
+		return r.roleName;
+	}
+},{
+	field:'roleName',
+	visible:false
+},
+{
+	field:'userId',
+	visible:false
+},{
+	title:'修改信息',
+	field:'edit',
+	formatter:function(v,r){
+		return "<a class='btn btn-default' onclick=\"editUser(\'"+r.userId+"\')\">修改</a>&nbsp;&nbsp;<a class='btn btn-default' onclick=\"deleteUser(\'"+r.userId+"\')\">删除</a>"
+	}
+}
+]; 
+XHUtils.template("searchbox",temData,blindClick);
+XHUtils.createTable("editUser", {columns:columns});
+loadTableData();
+/* 
+ * 获取所有用户信息
+ * 并创建其table
+*/
+function loadTableData(){
+	XHUtils.ajax({
+		url:XHUtils.COMMURL+'getUserList.do',
+		callBackFun:function(data){
+			XHUtils.load("editUser", data[XHUtils.JSON]);
+		}
+	})
+}
+function deleteUser1(theId){
+
+}
+function deleteUser(theId){
+	 XHUtils.ajax({
+			url:XHUtils.COMMURL+'deleteUserById.do',
+			data:JSON.stringify({userId:theId}),
+			callBackFun:function(data){
+				loadTableData();
+			}
+		}); 
+}
+function editUser(id){
+	var theId=id;
+	var html = "<script>"+XHUtils.heredoc(function(){
+		var temData = [{
+			tempName:'formTemplate',
+			data:{
+				id:'modalFormEditUser',
+				list:[{
+	    			name:'userId',
+	    			label:'ID',
+	    			type:'hidden',
+	    			labelClass:'hidden'
+	    		},{
+	    			name:'username',
+	    			label:'用户名',
+	    			type:'text'
+	    		},{
+	    			name:'phone',
+	    			label:'手机号',
+	    			type:'number'
+	    			
+	    		},{
+	    			name:'email',
+	    			label:'邮箱',
+	    			type:'email'
+	    		},{
+	    			type:'select',
+	    			label:'用户角色',
+	    			name:'roleId',
+	    			custom:'disabled',
+	    			dict:{
+	    				cache:false,
+	    				url:XHUtils.COMMURL+'dict.do',
+	    				data:'role'    				
+	    			}
+	    		}]
+			}
+		}];
+		var callBF = function(){
+			 XHUtils.ajax({
+				url:XHUtils.COMMURL+'getUserById.do',
+				data:JSON.stringify({userId:'%id%'}),
+				callBackFun:function(data){
+					XHUtils.setFormData(data[XHUtils.JSON]);
+				}
+			}); 
+		
+		}
+		XHUtils.template('editMenuBody',temData,callBF);
+	})+"<\/script>";
+	html = html.replace(/%id%/g,id);
+	var temDataModal = {tempName:'modalTem',data:{id:'modalEditMenu',bodyId:'editMenuBody',saveId:'saveUserMenu',content:html}};
+	var callBFModal = function(){
+		$('#saveUserMenu').on('click',function(){
+			// var json = XHUtils.convertStringJson('modalFormRole');
+			// json = JSON.stringify($.extend(JSON.parse(json),{roleTree:$('#roleTree').combotree('getValues')}));
+			XHUtils.ajax({//修改修改
+				url:XHUtils.COMMURL+'updateEditUser.do',
+				data:XHUtils.convertStringJson('modalFormEditUser'),
+				callBackFun:function(data){
+					$('#modalEditMenu').modal('hide');
+					loadTableData();
+					//hashchangeUrl();
+					
+				}
+			})
+		});
+	}
+	XHUtils.template('editMenu',temDataModal,callBFModal);
+	$('#modalEditMenu').modal();
+}
+</script>

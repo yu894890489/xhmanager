@@ -1,0 +1,25 @@
+<div id="formDiv"></div>
+<table id="claimedList">
+</table>
+<script type="text/javascript">
+
+
+	var columns = [{"field":"processDefinitionId","title":"processDefinitionId"},{"field":"processInstanceId","title":"processInstanceId"},{"field":"suspensionState","title":"suspensionState"},{"field":"priority","title":"priority"},{"field":"suspended","title":"suspended"},{"field":"revision","title":"revision"},{"field":"executionId","title":"executionId"},{"field":"taskDefinitionKey","title":"taskDefinitionKey"},{"field":"deleted","title":"deleted"},{"field":"createTime","title":"createTime",formatter:function(v){return XHUtils.formatterDate(v)}},{"field":"name","title":"name"},{"field":"tenantId","title":"tenantId"},{"field":"revisionNext","title":"revisionNext"},{"field":"id","title":"id"},{field:'claim',title:'认领',formatter:function(v,r){return "<button class='btn btn-default' onclick='complete(\"'+r.id+'\")'>完成</button>"}}];
+	XHUtils.ajax({
+		url:XHUtils.COMMURL+'act/findPersonnelTaskList.do',
+		callBackFun:function(data){
+			console.log(data);
+			XHUtils.createTable('claimedList',{columns:columns,data:JSON.parse(data[XHUtils.JSON])});
+		}
+	});
+	function complete(v){
+		XHUtils.ajax({
+			url:XHUtils.COMMURL+'act/complete.do',
+			data:JSON.stringify({taskId:v}),
+			callBackFun:function(data){
+				console.log(data);
+				alert(data.msg+"当前流程执行完毕！");
+			}
+		})
+	}
+</script>

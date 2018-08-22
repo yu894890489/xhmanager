@@ -1,0 +1,111 @@
+@import "variable";
+@import "func";
+
+.navbar-side {
+    z-index: 0; 
+}
+.navbar-side .nav > li > a > i{
+color: @cl-wh;
+padding: 8px;
+width: @nav-wh/9;
+text-align: center;
+}
+.navbar-side {
+  z-index: 1;
+  position: fixed;
+  width: @nav-wh;
+  top: 80px;
+}
+
+.arrow {
+    float: right;
+    margin-top: 8px;
+}
+
+.icon-fa.arrow:before {
+    content: "\f104";
+}
+
+.active > a > .icon-fa.arrow:before {
+    content: "\f107";
+}
+.generate-nav-level(6);
+
+
+.nav-second-level li,
+.nav-third-level li ,.nav-four-level li{
+    border-bottom: none !important;
+}
+
+.nav-second-level li a {
+    padding-left: 37px;
+}
+
+.nav-third-level li a {
+    padding-left: 55px;
+}
+.nav-four-level li a{
+    padding-left: 73px; 
+}
+.sidebar-collapse , .sidebar-collapse .nav{
+    background:none;
+}
+.sidebar-collapse .nav {
+    padding:0;
+}
+.click-bg{
+    background-color: @bg-black/4*3.5 !important;
+}
+.sidebar-collapse .nav > li > a {
+    color: @cl-wh;
+    //background:transparent;
+    text-shadow:none;
+}
+.sidebar-collapse > .nav > li > a {
+    padding: 12px 10px;
+}
+.sidebar-collapse > .nav > li {
+    border-bottom: 1px solid rgba(107, 108, 109, 0.19);
+}
+ul.nav.nav-second-level.collapse.in {background: #131212;}
+.sidebar-collapse .nav > li > a:hover,
+.sidebar-collapse .nav > li > a:focus {
+    outline:0;
+}
+ 
+.navbar-side {
+    border:none;
+    background: @bg-black;
+}
+.navbar-side a:hover,.navbar-side a:hover i{
+    color: #568fcc !important;
+}
+.navbar-default {
+border:0px solid black;
+     
+}
+.nav > li > a > i {
+    margin-right:10px;
+    color: rgb(240, 155, 34);
+}
+ @media(min-width:768px) {
+    
+    .navbar-side {
+        width: @nav-wh;
+        z-index: 1;
+    }
+
+   .navbar {
+ border-radius: 0px; 
+}
+   
+}
+@media(min-width:368px) {
+    
+    .navbar-side {
+        width: @nav-wh*2;
+        z-index: 1;
+    }
+    
+}
+

@@ -1,0 +1,24 @@
+<table id="processList"></table>
+<script type="text/javascript">
+	var columns = [{"field":"processDefinitionId","title":"processDefinitionId"},{"field":"processInstanceId","title":"processInstanceId"},{"field":"suspensionState","title":"suspensionState"},{"field":"priority","title":"priority"},{"field":"suspended","title":"suspended"},{"field":"revision","title":"revision"},{"field":"executionId","title":"executionId"},{"field":"taskDefinitionKey","title":"taskDefinitionKey"},{"field":"deleted","title":"deleted"},{"field":"createTime","title":"createTime",formatter:function(v,r,i){return XHUtils.formatterDate(v);}},{"field":"name","title":"name"},{"field":"tenantId","title":"tenantId"},{"field":"revisionNext","title":"revisionNext"},{"field":"id","title":"id"}];
+	
+	function startProcess(v){
+		XHUtils.ajax({
+			url:'/comm/act/startProcess.do',
+			data:JSON.stringify({processDefinitionId:v}),
+			callBackFun:function(data){
+				alert(data.msg+"流程已经启动！");
+			}
+		})
+	}
+
+	XHUtils.ajax({
+		url:'/comm/act/processList.do',
+		data:JSON.stringify({}),
+		callBackFun:function(data){
+			console.log(data);
+			XHUtils.createTable('processList',{columns:columns,data:JSON.parse(data[XHUtils.JSON])});
+		}
+	})
+
+</script>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xh.dao.DictDao">
+
+	<select id="getRoleDict" resultType="com.xh.comm.entry.DictBean">
+		SELECT ROLE_NAME AS 'VALUE',ROLE_ID AS 'KEY' FROM T_PUB_ROLE
+	</select>
+	<sql id="Menu_Column_List">
+		MENU_ID MENUID, MENU_NAME MENUNAME , MENU_PARENT_ID MENUPARENTID , IS_LEAF
+		ISLEAF, MENU_URL MENUURL,
+		MENU_ICON_URL MENUICONURL, MENU_ICON_LIGHT_UTL MENUICONLIGHTUTL,
+		MENU_DESC MENUDESC, SORT_KEY SORTKEY, RECORD_ID RECORDID, CREATER, CREATE_TIME
+		CREATETIME, UPDATER, UPDATE_TIME UPDATETIME
+	</sql>
+	<sql id="User_Column_List">
+		u.user_id userId, u.username, u.password, u.code, u.phone, u.email, u.creater,
+		u.create_time createTime, u.updater, u.update_time updateTime
+	</sql>
+
+
+	<select id="getRoleMenu" resultType="com.xh.comm.entry.MenuBean"
+		parameterType="java.util.List">
+		SELECT
+		<include refid="Menu_Column_List" />
+		,
+		IF(MENU_ID IN (SELECT MENU_ID FROM T_PUB_ROLE_MENU WHERE
+		1=1
+		<if test="list">
+			and ROLE_ID IN
+			<foreach collection="list" item="listItem" open="(" close=")"
+				separator=",">
+				#{listItem}
+			</foreach>
+		</if>
+		),TRUE,FALSE) AS CHECKED
+		FROM T_PUB_MENU order by MENU_PARENT_ID,SORT_KEY
+	</select>
+
+
+	<insert id="addRoleMenu" parameterType="java.util.List">
+		insert into t_pub_role_menu (ROLE_MENU_ID,ROLE_ID,MENU_ID,creater,
+		create_time, updater, update_time)
+		values
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(#{item.roleMenuId},#{item.roleId},#{item.menuId},#{item.creater},#{item.createTime},#{item.updater},#{item.updateTime})
+		</foreach>
+	</insert>
+
+
+	<select id="getUserList" resultType="java.util.Map">
+		select u.user_id userId, u.username, u.password, u.code, u.phone, u.email,
+		u.creater, u.create_time createTime, u.updater, u.update_time
+		updateTime t.roleId,r.role_name from t_pub_user u,t_pub_user_role
+		t,t_pub_role r where
+		u.user_id=t.user_id,r.role_id=t.role_id
+	</select>
+	
+	<insert id="addUserOrg" parameterType="java.util.List">
+		insert into t_pub_user_org (USER_ORG_ID,USER_ID,ORG_ID,is_delete,creater,updater,create_time,update_time)
+		values
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(#{item.userOrgId},#{item.userId},#{item.orgId},'0',#{item.creater},#{item.updater},#{item.createTime},#{item.updateTime})	
+		</foreach>
+	</insert>
+	<select id="getUserIdByOrgId" resultType="com.xh.comm.entry.UserBean" parameterType="java.lang.String" >
+		select  <include refid="User_Column_List" /> from t_pub_user,t_pub_user u where u.user_id in (select user_Id from t_pub_user_org where org_id = #{orgId})
+	</select>
+	
+	<select id="getUserIdByNotOrgId"  resultType="com.xh.comm.entry.UserBean" parameterType="java.lang.String" >
+		select  <include refid="User_Column_List" /> from t_pub_user u where u.user_id not in (select user_Id from t_pub_user_org where org_id = #{orgId})
+	</select>
+	
+	
+</mapper>
+
+

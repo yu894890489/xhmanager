@@ -1,0 +1,54 @@
+<div id="addUserFormDiv"></div>
+
+<script type="text/javascript">
+
+    var temData = [{
+    	tempName:'formTem',
+    	data:{
+    		id:'form23423445',
+    		list:[{
+    			name:'username',
+    			label:'用户名',
+    			type:'text'
+    		},{
+    			name:'email',
+    			label:'邮箱',
+    			type:'email'
+    		},{
+    			name:'phone',
+    			label:'手机号',
+    			type:'number'
+    		},{
+    			type:'select',
+    			label:'用户角色',
+    			name:'roleId',
+    			dict:{
+    				cache:false,
+    				url:XHUtils.COMMURL+'dict.do',
+    				data:'role'    				
+    			}
+    		}]
+    	}
+    },{
+    	tempName:'btnTemplate',
+    	data:{
+    		list:[{
+    			label:'保&nbsp;&nbsp;存',
+    			classes:'col-lg-offset-5 btn-success',
+    			id:'submit2131234545'
+    		}]
+    	}
+    }];
+    var clickEvent = function(){
+    	$('#submit2131234545').on('click',function(){
+    		XHUtils.ajax({
+    			url:XHUtils.COMMURL+'register.do',
+    			data:XHUtils.convertStringJson('form23423445'),
+    			callBackFun:function(data){
+    				console.log(data);
+    			}
+    		})
+    	});
+    };
+	XHUtils.template('addUserFormDiv',temData,clickEvent);
+</script>

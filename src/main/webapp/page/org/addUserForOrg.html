@@ -1,0 +1,171 @@
+<div id="orgTree" class="col-lg-4"></div>
+<div id="userTableDiv" class="col-lg-8">
+	<div class="col-lg-12" id="btnDiv"></div>
+	<table id="userTable"></table>
+	<input type="hidden" name="orgIdHidden" id="orgIdHidden" value>
+</div>
+<div id="addUserOrgModal"></div>
+<script type="text/javascript" src="/static/js/jquery.metisMenu.js"></script>
+<script type="text/javascript">
+
+XHUtils.ajax({
+	url:XHUtils.COMMURL+'checkExist.do',
+	callBackFun:function(data){
+		debugger
+	}
+})
+var temData = {
+		tempName:'menuTem',
+		data:{
+			id:'orgMenu',
+			list:[]
+		}
+	};
+	var callBF = function(){
+		$('#orgMenu').metisMenu();
+		$('a','#orgMenu').on('click',function(){
+			var id = $(this).attr('id');
+			$('#orgIdHidden').val(id);
+			loadTable();
+		});
+	}
+
+	function loadTable(){
+			
+			var id = $('#orgIdHidden').val();
+			XHUtils.ajax({
+				url:XHUtils.COMMURL+'getUserListByInIds.do',
+				data:JSON.stringify({orgId:id}),
+				callBackFun:function(data){
+					console.log(data);
+					var datas = XHUtils.getDataByResult(data);
+					$.each(datas,function(i,v){
+						datas[i]['orgId'] = id;
+					});
+					XHUtils.load('userTable',datas);
+				}
+			});
+	}
+	XHUtils.ajax({
+		url:XHUtils.COMMURL+'getOrgTree.do',
+		callBackFun:function(data){
+			console.log(data);
+			var jsonStr = data[XHUtils.JSON];
+			jsonStr = jsonStr.replace(/orgName/g,'label').replace(/orgId/g,'id');
+			temData.data.list=JSON.parse(jsonStr);
+			XHUtils.template('orgTree',temData,callBF); 
+		}
+	});
+
+	var btnTemData = [{
+		tempName:'btnTemplate',
+		data:{
+			list:[{
+				id:'addBtnUserOrg',
+				classes:'pull-right btn-success icon-plus margin-bottom-15',
+				label:XHUtils.ADD
+			}]
+		}
+	}];
+	var btnCallBf = function(){
+		$('#addBtnUserOrg').on('click',function(){
+			$('#modalAddUserOrg').modal('show');
+			XHUtils.ajax({
+		    	url:XHUtils.COMMURL+'getUserListByNotInIds.do',
+		    	data:JSON.stringify({orgId:$('#orgIdHidden').val()}),
+		    	callBackFun:function(data){
+					XHUtils.load('modalTable',data);
+		    	}
+		    })
+		});
+
+
+	};
+	XHUtils.template('btnDiv',btnTemData,btnCallBf);
+
+
+
+
+	var columns = [{
+		field:'userId',
+		title:'用户ID'
+	},{
+		field:'username',
+		title:'用户名'
+	},{
+		field:'orgId',
+		title:'组织ID'
+	},{
+		field:'orgName',
+		title:'组织名称',
+		formatter:function(v,r,i){
+			return $('#'+r.orgId).html().match(/[\u4e00-\u9fa5]+/g)[0];
+		}
+	},{
+		field:'userOrgId',
+		visible:false
+	},{
+		field:'operate',
+		title:'操作',
+		formatter:function(v,r){
+			return "<a class='btn btn-default' onclick=\"delUserOrg('"+r.userId+"','"+r.orgId+"')\">"+XHUtils.DEL+"</a>"
+		}
+	}];
+	XHUtils.createTable('userTable',{columns:columns});
+	function delUserOrg(userId,orgId){
+		XHUtils.ajax({
+			url:XHUtils.COMMURL+'delUserOrg.do',
+			data:JSON.stringify({userId:userId,orgId:orgId}),
+			callBackFun:function(data){
+				console.log(data);
+			}
+		})
+	}
+
+	var html = XHUtils.hereJs(function(){
+			var columnsModal = [{
+				checkbox:true,
+				field:'state'
+			},{
+				title:'用户名',
+				field:'username'
+			},{
+				title:'手机号',
+				field:'phone'
+			},{
+				title:'邮箱',
+				field:'email'
+			}];
+			XHUtils.createTable('modalTable',{columns:columnsModal})
+
+	});
+	var modalData = {
+		tempName:'modalTem',
+		data:{
+			id:'modalAddUserOrg',
+			bodyId:'modalAddUserOrgBody',
+			saveId:'userOrgSaveBtn',
+			tableId:'modalTable',
+			content:html
+		}
+	};
+	var modalCallBF = function(){
+		$('#userOrgSaveBtn').on('click',function(){
+			var arry = $('#modalTable').bootstrapTable('getAllSelections');
+			var ids = [];
+			for(var i = 0;i<arry.length;i++){
+				ids.push(arry[i].userId);
+			}
+			XHUtils.ajax({
+				url:XHUtils.COMMURL+'addUsersByOrg.do',
+				data:JSON.stringify({ids:ids,orgId:$('#orgIdHidden').val()}),
+				callBackFun:function(data){
+					loadTable();
+					$('#modalAddUserOrg').modal('hide');
+				}
+			})
+		});
+	}
+	XHUtils.template('addUserOrgModal',modalData,modalCallBF)
+	
+</script>

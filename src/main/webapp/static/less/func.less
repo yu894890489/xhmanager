@@ -1,0 +1,64 @@
+/**
+ * 生成多级组织树样式
+ * @param  {[type]} @n          [description]
+ * @param  {[type]} @i:         2             [description]
+ * @param  {[type]} @inti:18px) when          (@i           [description]
+ * @return {[type]}             [description]
+ */
+.generate-nav-level(@n, @i: 2,@inti:25px) when (@i =< @n){
+    .nav-@{i}-level li{
+        border-bottom: none !important;
+    }
+    .nav-@{i}-level li a{
+        padding-left: (37+(@i - 2) * @inti);
+    }
+
+    .generate-nav-level(@n,@i + 1)
+}
+
+//以下是暂未使用的
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+     * 所有li的公共样式function
+ */
+.bg-position(@b,@a:15px){
+    background-position: @a @b;
+}
+.one(@i,@color:@nav-bg-color) when(@i = 1){
+    .bg-position(4px);
+    border-top: 1px solid @color;
+}
+
+/**
+     * 生成多个li如： .generate-sort-list(5);
+ */
+.generate-sort-list(@n, @i: 1,@inti:4px,@color:@nav-bg-color) when (@i =< @n){
+    
+    .sort .sort-list li{
+        & a{
+            .sort-list-@{i}{
+            & when(@i = 1){
+                border-top: 1px solid @color;
+            }
+            .bg-position(@inti - 100 * (@i - 1));
+         }
+        }
+         &.hover a {
+             &.sort-list-@{i}{
+                .bg-position(@inti - 100 * @i + 50);
+            }
+        }
+    }
+  .generate-sort-list(@n, (@i + 1));
+}

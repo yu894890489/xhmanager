@@ -1,0 +1,92 @@
+<div id="form45235234"></div>
+
+<link rel="stylesheet" type="text/css" href="/static/css/easyui.css">
+<script type="text/javascript" src="/static/js/jquery.easyui.min.js"></script>
+<script type="text/javascript">
+	var temData = [{
+		tempName: 'formTem',
+		data: {
+			id: 'form246562',
+			list: [{
+				label: '菜单名',
+				name: 'menuName',
+				type: 'text'
+			}, {
+				label: '菜单Url',
+				name: 'menuUrl',
+				type: 'text'
+			}, {
+				label: '排序序号',
+				name: 'sortKey',
+				type: 'number'
+			}, {
+				label: '树',
+				name: 'menuParentId',
+				type: 'text'
+			}, {
+				label: '菜单描述',
+				name: 'menuDesc',
+				type: 'textarea'
+			}, {
+				label: '样式',
+				name: 'menuIconUrl',
+				type: 'text'
+			}]
+		}
+	}, {
+		tempName: 'btnTemplate',
+		data: {
+			list: [{
+				id: 'submit2568678',
+				label: '保存'
+			}]
+		}
+	}];
+
+	var callBF = function() {
+		$('#menuParentId').combotree({
+			editable: false,
+			textField: 'menuName',
+			valueField: 'menuId'
+		});
+
+		XHUtils.ajax({
+			url: XHUtils.COMMURL + 'getMenu.do',
+			callBackFun: function(data) {
+				var jsonStr = data[XHUtils.JSON];
+				var list = JSON.parse(jsonStr.replace(/menuId/g, 'id').replace(/menuName/g, 'text'));
+				if(list.length <= 0) {
+					list = [{
+						id: '0',
+						text: '暂未数据'
+					}]
+				}
+				$('#menuParentId').combotree({
+					data: list
+				});
+			}
+		});
+
+		$('#submit2568678').on('click', function() {
+			var json = XHUtils.convertStringJson('form246562');
+			var val = $('#menuParentId').combotree('getValue');
+			if(XHUtils.isEmpty(val) || val === '0') {
+				$('#menuParentId').combotree('setValue', 'root');
+				json = JSON.stringify($.extend(JSON.parse(json), {
+					menuParentId: $('#menuParentId').combotree('getValue')
+				}));
+			}
+			XHUtils.ajax({
+				url: XHUtils.COMMURL + 'addMenu.do',
+				data: json,
+				callBackFun: function(data) {
+					console.log(data);
+					hashchangeUrl();
+				}
+			})
+		});
+
+	}
+	XHUtils.template('form45235234', temData, callBF);
+
+</script>

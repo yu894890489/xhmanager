@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title></title>
+</head>
+<body>
+
+	<div class="container-fluid">
+		<div class="row">
+			<form id="loginForm">
+				<div class="col-lg-5 col-lg-offset-4">
+					<input type="text" name="username">
+				</div>
+				<div class="col-lg-5 col-lg-offset-4">
+					<input type="password" name="password"> <input name="sddd">
+				</div>
+				<div class="col-lg-5 col-lg-offset-4">
+
+
+					<input type="button" name="submit" id="submit">
+				</div>
+			</form>
+		</div>
+	</div>
+	<div id="a"></div>
+	<link rel="stylesheet" type="text/css"
+		href="../static/bootstrap/css/bootstrap.css">
+	<script type="text/javascript" src="../static/js/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="../static/js/template-debug.js"></script>
+	<script type="text/javascript"
+		src="../static/bootstrap/js/bootstrap.js"></script>
+	<script type="text/javascript" src="../static/js/XHUtils.js"></script>
+	<script type="text/javascript">
+	$('#submit').on('click',function(){
+		XHUtils.ajax({
+			url:'/comm/login.do',
+			data:XHUtils.convertStringJson('loginForm'),
+			callBackFun:function(data){
+				console.log(data);
+			}
+		});
+	});
+	//ajaxTest();
+	 function ajaxTest(){
+	 console.log(JSON.stringify({username:'1',password:'2'}));  
+	        $.ajax({  
+	        type:"post",  
+	        dataType: 'json',
+	        contentType: "application/json",
+	        data:JSON.stringify({username:'1',password:'2'}),  
+	        url:"/comm/login2.do",  
+	        error:function(data){ 
+	            alert("出错了！！:"+data.msg);  
+	        },  
+	        success:function(data){ 
+	        	console.log(data);
+	            alert("success:"+data.msg);  
+	            $("#result").html(data.msg) ;  
+	        }  
+	        });  
+	    }  
+	</script>
+</body>
+</html>

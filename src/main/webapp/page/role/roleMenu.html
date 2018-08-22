@@ -1,0 +1,132 @@
+<table id="roleListMenu"></table>
+<div id="roleMenu"></div>
+<link rel="stylesheet" type="text/css" href="/static/css/easyui.css">
+<script type="text/javascript" src="/static/js/jquery.easyui.min.js"></script>
+<script type="text/javascript">
+	var columns = [
+    {
+        "field": "roleDesc",
+        "title": "roleDesc"
+    },
+    {
+        "field": "roleGrade",
+        "title": "roleGrade"
+    },
+    {
+        "field": "roleId",
+        "title": "roleId"
+    },{
+        "field": "roleName",
+        "title": "roleName"
+    },
+    {
+        "field": "updateTime",
+        "title": "updateTime",
+        formatter:function(v){
+        	return v?XHUtils.formatterDate(v):"-";
+        }
+    },
+    {
+        "field": "updater",
+        "title": "updater"
+    },
+    {
+        "field": "creater",
+        "title": "creater"
+    },
+    {
+        "field": "createTime",
+        "title": "createTime",
+        formatter:function(v){
+        	return v?XHUtils.formatterDate(v):"-";
+        }
+    },{
+    	field:'btn',
+    	title:'菜单权限',
+    	formatter:function(v,r,i){
+    		return "<a class='btn btn-default' onclick=\"lookMenu(\'"+r.roleId+"\')\">权限</a>"
+    	}
+    }
+];
+	XHUtils.ajax({
+		url:XHUtils.COMMURL+'getRoleList.do',
+		callBackFun:function(data){
+			XHUtils.createTable('roleListMenu',{columns:columns,data:JSON.parse(data[XHUtils.JSON])});
+		}
+	});
+/* 
+ * 点击事件，弹出弹窗
+ * 
+*/
+function lookMenu(id){
+	var html = "<script>"+XHUtils.heredoc(function(){
+		var temData = [{
+			tempName:'formTemplate',
+			data:{
+				id:'modalFormRole',
+				list:[{
+					name:'roleId',
+					label:'角色id'
+				},{
+					name:'roleName',
+					label:'roleName'
+				},{
+					name:'roleDesc',
+					label:'roleDesc'
+				},{
+					name:'roleTree',
+					label:'roleTree'
+				}]
+			}
+		}];
+		var callBF = function(){
+			XHUtils.ajax({
+				url:XHUtils.COMMURL+'getRoleById.do',
+				data:JSON.stringify({roleId:'%id%'}),
+				callBackFun:function(data){
+					XHUtils.setFormData(data[XHUtils.JSON]);
+				}
+			});
+			$('#roleTree').combotree({width:468,multiple:true});
+			XHUtils.ajax({
+				url:XHUtils.COMMURL+'getMenu.do',
+				data:JSON.stringify({roleId:'%id%'}),
+				callBackFun: function(data) {
+					var jsonStr = data[XHUtils.JSON];
+					var list = JSON.parse(jsonStr.replace(/menuId/g, 'id').replace(/menuName/g, 'text'));
+					if(list.length <= 0) {
+						list = [{
+							id: '0',
+							text: '暂未数据'
+						}]
+					}
+					$('#roleTree').combotree({
+						data: list
+					});
+				}
+			});
+		}
+		XHUtils.template('roleMenuBody',temData,callBF);
+	})+"<\/script>";
+	html = html.replace(/%id%/g,id);
+
+	var temDataModal = {tempName:'modalTem',data:{id:'modalRoleMenu',bodyId:'roleMenuBody',saveId:'saveRoleMenu',content:html}};
+	var callBFModal = function(){
+		$('#saveRoleMenu').on('click',function(){
+			// var json = XHUtils.convertStringJson('modalFormRole');
+			// json = JSON.stringify($.extend(JSON.parse(json),{roleTree:$('#roleTree').combotree('getValues')}));
+			XHUtils.ajax({
+				url:XHUtils.COMMURL+'addRoleMenu.do',
+				data:XHUtils.convertStringJson('modalFormRole'),
+				callBackFun:function(data){
+					console.log(data);
+					$('#modalRoleMenu').modal('hide');
+				}
+			})
+		});
+	}
+	XHUtils.template('roleMenu',temDataModal,callBFModal);
+	$('#modalRoleMenu').modal();
+}
+	
+</script>

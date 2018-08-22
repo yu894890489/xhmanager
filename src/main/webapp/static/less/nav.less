@@ -1,0 +1,129 @@
+@import "variable";
+@import "func";
+
+
+
+
+
+* {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+[collapse]:hover{
+	cursor:pointer;
+}
+.sort a {
+    color: @nav-font-color;
+    text-decoration: none !important;
+    outline: none !important;
+    /*blr:expression(this.onFocus=this.blur());*/
+}
+
+
+.sort .sort-ti,
+.sort .sort-list li.hover,
+.sort .sort-list ul li.hover{
+    background-color: @nav-hover-color;
+}
+
+.sort {
+    width: @nav-width;
+    height: auto;
+    float: left;
+    position: relative;
+    z-index: 20
+}
+
+.sort .sort-ti {
+    height: @nav-li-height;
+    font: 14px/35px "microsoft yahei";
+    color: #fff;
+    padding-left: 30px
+}
+
+.sort .sort-list {
+    border: 2px solid @nav-border-color1;
+    border-top: 0;
+    height: 315px;
+    padding: 0 1px;
+    background-color: @nav-bg-color
+}
+
+.sort .sort-list ul {
+    height: @nav-width;
+}
+
+.sort .sort-list li {
+    padding: 0 5px;
+    width: @nav-li-width;
+    height: @nav-li-height + 2;
+    float: left
+}
+
+.sort .sort-list li a {
+    display: block;
+    height: @nav-li-height;
+    line-height: @nav-li-height;
+    font-size: 14px;
+    border-top: 1px solid #fff;
+    border-bottom: 1px solid #f1f0f0;
+    padding-left: 30%;
+    cursor: pointer;
+}
+
+.sort .sort-list li a span {
+    display: block;
+    height: @nav-li-height;
+    background-position: right -80px
+}
+
+.sort .sort-list li.hover {
+}
+
+.sort .sort-list li.hover a {
+    color: #fff
+}
+
+//.generate-sort-list(@nav-li-grade);
+
+.sort .sort-list ul ul {
+    display: none
+}
+
+.sort .sort-list ul li.hover ul {
+    background-color: #fff;
+    border: 2px solid @nav-border-color2;
+    left: 160px;
+    margin-top: -1-@nav-li-height;
+    width: 120px;
+    z-index: 30;
+    position: absolute;
+    height: auto;
+    overflow: hidden
+}
+
+.sort .sort-list ul li.hover ul li {
+    height: @nav-li-height - 10;
+    padding: 0
+}
+
+.sort .sort-list ul li.hover ul {
+    display: block
+}
+
+.sort .sort-list ul li.hover ul li a {
+    height: @nav-li-height - 10;
+    line-height: @nav-li-height - 10;
+    font-size: 12px;
+    border-top: 0;
+    border-bottom: 0;
+    padding-left: 30px;
+    color: #333;
+}
+
+.sort .sort-list ul li.hover ul li a:hover {
+}
+
+
+

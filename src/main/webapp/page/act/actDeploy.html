@@ -1,0 +1,54 @@
+
+<div id="formDiv213123"></div>
+<script type="text/javascript">
+		var formData = {
+		id:"form213123",
+		list:[{
+			name:"processName",
+			label:"流程名称",
+			type:'text'
+		},{
+			name:"processCode",
+			label:"流程编码",
+			type:'textarea',
+			rows:3
+		}]
+	};
+	var btnData = {list:[{
+				id:'submit213123',
+				classes:'btn-info col-lg-offset-5',
+				label:'部署'
+			}]};
+
+
+
+
+
+
+
+
+
+			
+
+	var data = [{
+		tempName:'formTemplate',
+		data:formData
+	},{
+		tempName:'btnTemplate',
+		data:btnData
+	} ];
+	var addClickForBtn = function(){
+		
+		$('#'+btnData.list[0].id).on('click',function(){
+			XHUtils.ajax({
+				url:XHUtils.COMMURL+'act/deploy.do',
+				data:XHUtils.convertStringJson('form213123'),
+				callBackFun:function(data){
+					console.log(data);
+				}
+			})
+		})
+	}
+	XHUtils.template('formDiv213123',data,addClickForBtn);
+	
+</script>

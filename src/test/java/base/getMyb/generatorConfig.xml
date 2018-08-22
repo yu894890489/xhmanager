@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration 
+      PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+      "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+  
+  <generatorConfiguration>
+      <classPathEntry
+              location="D:\maven\res\mysql\mysql-connector-java\5.1.6\mysql-connector-java-5.1.6.jar"/><!-- jar包地址-->
+      <context id="my" targetRuntime="MyBatis3">
+         <commentGenerator>
+             <property name="suppressDate" value="false"/>
+             <property name="suppressAllComments" value="true"/>
+         </commentGenerator>
+
+         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                         connectionURL="jdbc:mysql://192.168.1.254:3306/xhbeta?useUnicode=true" userId="xhbeta"
+                         password="password"/><!-- 数据库配置-->
+ 
+          <javaModelGenerator targetPackage="com.xh.comm.entry" targetProject="../../../../main/java">
+          <property name="enableSubPackages" value="true"/>
+          <property name="trimStrings" value="true"/>
+      </javaModelGenerator>
+       
+      <sqlMapGenerator targetPackage="com.xh.mapper" targetProject="../../../../main/java">
+      </sqlMapGenerator>
+       
+      <javaClientGenerator type="XMLMAPPER" targetPackage="com.xh.dao" targetProject="../../../../main/java">
+        <property name="enableSubPackages" value="true"/>
+      </javaClientGenerator>
+ 
+         <!--<table tableName="T_FEE_AGTBILL" domainObjectName="FeeAgentBill"
+               enableCountByExample="false" enableUpdateByExample="false"
+                enableDeleteByExample="false" enableSelectByExample="false"
+                selectByExampleQueryId="false"/>-->
+ 		<!--在下面改动表名（ tableName）bean的名（domainObjectName）-->
+         <table tableName="t_pub_role_menu" domainObjectName="RoleMenuBean">
+             <!--<columnRenamingRule searchString="^D_"
+                                 replaceString=""/>-->
+         </table>
+ 
+     </context>
+ </generatorConfiguration>

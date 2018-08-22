@@ -1,0 +1,115 @@
+/**
+ *变量名nav
+ */
+/**
+     * nav的背景色
+ */
+/**
+     * nav字体颜色
+ */
+/**
+     * 每个li的hover色
+ */
+/**
+     * nav的宽度
+ */
+/**
+     * li的宽度
+ */
+/**
+     * 指定一级菜单有几个
+ */
+/**
+     * 大的border颜色
+ */
+/**
+     * 悬浮的border颜色
+ */
+/**
+ * 头部变量名
+ */
+/**
+ * head bg的颜色
+ * @type {[type]}
+ */
+/**
+ * 以下都是为了简化css名称
+ */
+/**
+ * 公共样式
+ */
+.no-padding-left {
+	padding-left: 0px;
+}
+
+.no-padding-right {
+	padding-right: 0px;
+}
+
+.no-padding {
+	padding-left: 0px;
+	padding-right: 0px;
+}
+
+.margin-bottom-15 {
+	margin-bottom: 15px;
+}
+
+.margin-top-15 {
+	margin-top: 15px;
+}
+
+.margin-left-15 {
+	margin-left: 15px;
+}
+
+.margin-right-15 {
+	margin-right: 15px;
+}
+
+.margin-bottom-30 {
+	margin-bottom: 30px;
+}
+
+.margin-top-30 {
+	margin-top: 30px;
+}
+
+.margin-left-30 {
+	margin-left: 30px;
+}
+
+.margin-right-30 {
+	margin-right: 30px;
+}
+/**
+ * head样式
+ */
+.head-bg {
+	background-color: #FFFFFF;
+}
+
+.head-border {
+	border: 1px solid #e5e5e5;
+}
+
+.head-img {
+	background-image:
+		url('http://www.xinhuasoft.cn/tpl/xinhuasoft/Public/images/logo.png');
+	height: 50px;
+	width: 145px;
+}
+
+.reorder-35 {
+	font-size: 35px;
+}
+/**
+ * tree的样式
+ */
+.tree {
+	margin-left: 15px;
+}
+
+.tree div {
+	margin-left: 15px;
+}

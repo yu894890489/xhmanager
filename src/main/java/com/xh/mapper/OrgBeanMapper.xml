@@ -1,0 +1,480 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xh.dao.OrgBeanMapper" >
+  <resultMap id="BaseResultMap" type="com.xh.comm.entry.OrgBean" >
+    <id column="ORG_ID" property="orgId" jdbcType="VARCHAR" />
+    <result column="ORG_NAME" property="orgName" jdbcType="VARCHAR" />
+    <result column="ORG_PARENT_ID" property="orgParentId" jdbcType="VARCHAR" />
+    <result column="ORG_CODE" property="orgCode" jdbcType="VARCHAR" />
+    <result column="ORG_IMG" property="orgImg" jdbcType="VARCHAR" />
+    <result column="ORG_WEBSITE" property="orgWebsite" jdbcType="VARCHAR" />
+    <result column="ORG_EMAIL" property="orgEmail" jdbcType="VARCHAR" />
+    <result column="ORG_PHONE" property="orgPhone" jdbcType="VARCHAR" />
+    <result column="ORG_PROV_ID" property="orgProvId" jdbcType="VARCHAR" />
+    <result column="ORG_CITY_ID" property="orgCityId" jdbcType="VARCHAR" />
+    <result column="ORG_AREA_ID" property="orgAreaId" jdbcType="VARCHAR" />
+    <result column="ORG_DESC" property="orgDesc" jdbcType="VARCHAR" />
+    <result column="SORT_KEY" property="sortKey" jdbcType="INTEGER" />
+    <result column="RECORD_STATE" property="recordState" jdbcType="VARCHAR" />
+    <result column="creater" property="creater" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="DATE" />
+    <result column="updater" property="updater" jdbcType="VARCHAR" />
+    <result column="update_time" property="updateTime" jdbcType="DATE" />
+    <result column="is_delete" property="isDelete" jdbcType="VARCHAR" />
+    <result column="ORG_ADDRESS" property="orgAddress" jdbcType="VARCHAR" />
+    <result column="MODIFY_USER_ID" property="modifyUserId" jdbcType="VARCHAR" />
+    <result column="MODIFY_TIME" property="modifyTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    ORG_ID, ORG_NAME, ORG_PARENT_ID, ORG_CODE, ORG_IMG, ORG_WEBSITE, ORG_EMAIL, ORG_PHONE, 
+    ORG_PROV_ID, ORG_CITY_ID, ORG_AREA_ID, ORG_DESC, SORT_KEY, RECORD_STATE, creater, 
+    create_time, updater, update_time, is_delete, ORG_ADDRESS, MODIFY_USER_ID, MODIFY_TIME
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.xh.comm.entry.OrgBeanExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_pub_org
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_pub_org
+    where ORG_ID = #{orgId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_pub_org
+    where ORG_ID = #{orgId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.xh.comm.entry.OrgBeanExample" >
+    delete from t_pub_org
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.xh.comm.entry.OrgBean" >
+    insert into t_pub_org (ORG_ID, ORG_NAME, ORG_PARENT_ID, 
+      ORG_CODE, ORG_IMG, ORG_WEBSITE, 
+      ORG_EMAIL, ORG_PHONE, ORG_PROV_ID, 
+      ORG_CITY_ID, ORG_AREA_ID, ORG_DESC, 
+      SORT_KEY, RECORD_STATE, creater, 
+      create_time, updater, update_time, 
+      is_delete, ORG_ADDRESS, MODIFY_USER_ID, 
+      MODIFY_TIME)
+    values (#{orgId,jdbcType=VARCHAR}, #{orgName,jdbcType=VARCHAR}, #{orgParentId,jdbcType=VARCHAR}, 
+      #{orgCode,jdbcType=VARCHAR}, #{orgImg,jdbcType=VARCHAR}, #{orgWebsite,jdbcType=VARCHAR}, 
+      #{orgEmail,jdbcType=VARCHAR}, #{orgPhone,jdbcType=VARCHAR}, #{orgProvId,jdbcType=VARCHAR}, 
+      #{orgCityId,jdbcType=VARCHAR}, #{orgAreaId,jdbcType=VARCHAR}, #{orgDesc,jdbcType=VARCHAR}, 
+      #{sortKey,jdbcType=INTEGER}, #{recordState,jdbcType=VARCHAR}, #{creater,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=DATE}, #{updater,jdbcType=VARCHAR}, #{updateTime,jdbcType=DATE}, 
+      #{isDelete,jdbcType=VARCHAR}, #{orgAddress,jdbcType=VARCHAR}, #{modifyUserId,jdbcType=VARCHAR}, 
+      #{modifyTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xh.comm.entry.OrgBean" >
+    insert into t_pub_org
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="orgId != null" >
+        ORG_ID,
+      </if>
+      <if test="orgName != null" >
+        ORG_NAME,
+      </if>
+      <if test="orgParentId != null" >
+        ORG_PARENT_ID,
+      </if>
+      <if test="orgCode != null" >
+        ORG_CODE,
+      </if>
+      <if test="orgImg != null" >
+        ORG_IMG,
+      </if>
+      <if test="orgWebsite != null" >
+        ORG_WEBSITE,
+      </if>
+      <if test="orgEmail != null" >
+        ORG_EMAIL,
+      </if>
+      <if test="orgPhone != null" >
+        ORG_PHONE,
+      </if>
+      <if test="orgProvId != null" >
+        ORG_PROV_ID,
+      </if>
+      <if test="orgCityId != null" >
+        ORG_CITY_ID,
+      </if>
+      <if test="orgAreaId != null" >
+        ORG_AREA_ID,
+      </if>
+      <if test="orgDesc != null" >
+        ORG_DESC,
+      </if>
+      <if test="sortKey != null" >
+        SORT_KEY,
+      </if>
+      <if test="recordState != null" >
+        RECORD_STATE,
+      </if>
+      <if test="creater != null" >
+        creater,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updater != null" >
+        updater,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="isDelete != null" >
+        is_delete,
+      </if>
+      <if test="orgAddress != null" >
+        ORG_ADDRESS,
+      </if>
+      <if test="modifyUserId != null" >
+        MODIFY_USER_ID,
+      </if>
+      <if test="modifyTime != null" >
+        MODIFY_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="orgId != null" >
+        #{orgId,jdbcType=VARCHAR},
+      </if>
+      <if test="orgName != null" >
+        #{orgName,jdbcType=VARCHAR},
+      </if>
+      <if test="orgParentId != null" >
+        #{orgParentId,jdbcType=VARCHAR},
+      </if>
+      <if test="orgCode != null" >
+        #{orgCode,jdbcType=VARCHAR},
+      </if>
+      <if test="orgImg != null" >
+        #{orgImg,jdbcType=VARCHAR},
+      </if>
+      <if test="orgWebsite != null" >
+        #{orgWebsite,jdbcType=VARCHAR},
+      </if>
+      <if test="orgEmail != null" >
+        #{orgEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="orgPhone != null" >
+        #{orgPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="orgProvId != null" >
+        #{orgProvId,jdbcType=VARCHAR},
+      </if>
+      <if test="orgCityId != null" >
+        #{orgCityId,jdbcType=VARCHAR},
+      </if>
+      <if test="orgAreaId != null" >
+        #{orgAreaId,jdbcType=VARCHAR},
+      </if>
+      <if test="orgDesc != null" >
+        #{orgDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="sortKey != null" >
+        #{sortKey,jdbcType=INTEGER},
+      </if>
+      <if test="recordState != null" >
+        #{recordState,jdbcType=VARCHAR},
+      </if>
+      <if test="creater != null" >
+        #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=DATE},
+      </if>
+      <if test="updater != null" >
+        #{updater,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=DATE},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=VARCHAR},
+      </if>
+      <if test="orgAddress != null" >
+        #{orgAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyUserId != null" >
+        #{modifyUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyTime != null" >
+        #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.xh.comm.entry.OrgBeanExample" resultType="java.lang.Integer" >
+    select count(*) from t_pub_org
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_pub_org
+    <set >
+      <if test="record.orgId != null" >
+        ORG_ID = #{record.orgId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orgName != null" >
+        ORG_NAME = #{record.orgName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orgParentId != null" >
+        ORG_PARENT_ID = #{record.orgParentId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orgCode != null" >
+        ORG_CODE = #{record.orgCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orgImg != null" >
+        ORG_IMG = #{record.orgImg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orgWebsite != null" >
+        ORG_WEBSITE = #{record.orgWebsite,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orgEmail != null" >
+        ORG_EMAIL = #{record.orgEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orgPhone != null" >
+        ORG_PHONE = #{record.orgPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orgProvId != null" >
+        ORG_PROV_ID = #{record.orgProvId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orgCityId != null" >
+        ORG_CITY_ID = #{record.orgCityId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orgAreaId != null" >
+        ORG_AREA_ID = #{record.orgAreaId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orgDesc != null" >
+        ORG_DESC = #{record.orgDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sortKey != null" >
+        SORT_KEY = #{record.sortKey,jdbcType=INTEGER},
+      </if>
+      <if test="record.recordState != null" >
+        RECORD_STATE = #{record.recordState,jdbcType=VARCHAR},
+      </if>
+      <if test="record.creater != null" >
+        creater = #{record.creater,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=DATE},
+      </if>
+      <if test="record.updater != null" >
+        updater = #{record.updater,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=DATE},
+      </if>
+      <if test="record.isDelete != null" >
+        is_delete = #{record.isDelete,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orgAddress != null" >
+        ORG_ADDRESS = #{record.orgAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.modifyUserId != null" >
+        MODIFY_USER_ID = #{record.modifyUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.modifyTime != null" >
+        MODIFY_TIME = #{record.modifyTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_pub_org
+    set ORG_ID = #{record.orgId,jdbcType=VARCHAR},
+      ORG_NAME = #{record.orgName,jdbcType=VARCHAR},
+      ORG_PARENT_ID = #{record.orgParentId,jdbcType=VARCHAR},
+      ORG_CODE = #{record.orgCode,jdbcType=VARCHAR},
+      ORG_IMG = #{record.orgImg,jdbcType=VARCHAR},
+      ORG_WEBSITE = #{record.orgWebsite,jdbcType=VARCHAR},
+      ORG_EMAIL = #{record.orgEmail,jdbcType=VARCHAR},
+      ORG_PHONE = #{record.orgPhone,jdbcType=VARCHAR},
+      ORG_PROV_ID = #{record.orgProvId,jdbcType=VARCHAR},
+      ORG_CITY_ID = #{record.orgCityId,jdbcType=VARCHAR},
+      ORG_AREA_ID = #{record.orgAreaId,jdbcType=VARCHAR},
+      ORG_DESC = #{record.orgDesc,jdbcType=VARCHAR},
+      SORT_KEY = #{record.sortKey,jdbcType=INTEGER},
+      RECORD_STATE = #{record.recordState,jdbcType=VARCHAR},
+      creater = #{record.creater,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=DATE},
+      updater = #{record.updater,jdbcType=VARCHAR},
+      update_time = #{record.updateTime,jdbcType=DATE},
+      is_delete = #{record.isDelete,jdbcType=VARCHAR},
+      ORG_ADDRESS = #{record.orgAddress,jdbcType=VARCHAR},
+      MODIFY_USER_ID = #{record.modifyUserId,jdbcType=VARCHAR},
+      MODIFY_TIME = #{record.modifyTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xh.comm.entry.OrgBean" >
+    update t_pub_org
+    <set >
+      <if test="orgName != null" >
+        ORG_NAME = #{orgName,jdbcType=VARCHAR},
+      </if>
+      <if test="orgParentId != null" >
+        ORG_PARENT_ID = #{orgParentId,jdbcType=VARCHAR},
+      </if>
+      <if test="orgCode != null" >
+        ORG_CODE = #{orgCode,jdbcType=VARCHAR},
+      </if>
+      <if test="orgImg != null" >
+        ORG_IMG = #{orgImg,jdbcType=VARCHAR},
+      </if>
+      <if test="orgWebsite != null" >
+        ORG_WEBSITE = #{orgWebsite,jdbcType=VARCHAR},
+      </if>
+      <if test="orgEmail != null" >
+        ORG_EMAIL = #{orgEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="orgPhone != null" >
+        ORG_PHONE = #{orgPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="orgProvId != null" >
+        ORG_PROV_ID = #{orgProvId,jdbcType=VARCHAR},
+      </if>
+      <if test="orgCityId != null" >
+        ORG_CITY_ID = #{orgCityId,jdbcType=VARCHAR},
+      </if>
+      <if test="orgAreaId != null" >
+        ORG_AREA_ID = #{orgAreaId,jdbcType=VARCHAR},
+      </if>
+      <if test="orgDesc != null" >
+        ORG_DESC = #{orgDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="sortKey != null" >
+        SORT_KEY = #{sortKey,jdbcType=INTEGER},
+      </if>
+      <if test="recordState != null" >
+        RECORD_STATE = #{recordState,jdbcType=VARCHAR},
+      </if>
+      <if test="creater != null" >
+        creater = #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=DATE},
+      </if>
+      <if test="updater != null" >
+        updater = #{updater,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=DATE},
+      </if>
+      <if test="isDelete != null" >
+        is_delete = #{isDelete,jdbcType=VARCHAR},
+      </if>
+      <if test="orgAddress != null" >
+        ORG_ADDRESS = #{orgAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyUserId != null" >
+        MODIFY_USER_ID = #{modifyUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyTime != null" >
+        MODIFY_TIME = #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ORG_ID = #{orgId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xh.comm.entry.OrgBean" >
+    update t_pub_org
+    set ORG_NAME = #{orgName,jdbcType=VARCHAR},
+      ORG_PARENT_ID = #{orgParentId,jdbcType=VARCHAR},
+      ORG_CODE = #{orgCode,jdbcType=VARCHAR},
+      ORG_IMG = #{orgImg,jdbcType=VARCHAR},
+      ORG_WEBSITE = #{orgWebsite,jdbcType=VARCHAR},
+      ORG_EMAIL = #{orgEmail,jdbcType=VARCHAR},
+      ORG_PHONE = #{orgPhone,jdbcType=VARCHAR},
+      ORG_PROV_ID = #{orgProvId,jdbcType=VARCHAR},
+      ORG_CITY_ID = #{orgCityId,jdbcType=VARCHAR},
+      ORG_AREA_ID = #{orgAreaId,jdbcType=VARCHAR},
+      ORG_DESC = #{orgDesc,jdbcType=VARCHAR},
+      SORT_KEY = #{sortKey,jdbcType=INTEGER},
+      RECORD_STATE = #{recordState,jdbcType=VARCHAR},
+      creater = #{creater,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=DATE},
+      updater = #{updater,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=DATE},
+      is_delete = #{isDelete,jdbcType=VARCHAR},
+      ORG_ADDRESS = #{orgAddress,jdbcType=VARCHAR},
+      MODIFY_USER_ID = #{modifyUserId,jdbcType=VARCHAR},
+      MODIFY_TIME = #{modifyTime,jdbcType=TIMESTAMP}
+    where ORG_ID = #{orgId,jdbcType=VARCHAR}
+  </update>
+</mapper>

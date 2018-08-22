@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="UTF-8">
+<title>home</title>
+</head>
+
+<body>
+	<aside>
+		<div class="col-lg-12 head-bg margin-bottom-15 head-border">
+			<i class="icon-reorder reorder-35 pull-left" collapse="nav"
+				style="margin-top: 7px"></i>
+			<!-- <div class="head-img img-responsive pull-left"></div> -->
+			<ul class="nav pull-right top-menu">
+				<li class="dropdown"><a data-toggle="dropdown" id="nameA"
+					class="dropdown-toggle" href="#" data-toggle="dropdown"> <span
+						class="username" id="loginUserName">yu</span> <b class="caret"></b>
+				</a>
+					<ul class="dropdown-menu extended logout" role="menu">
+						<div class="log-arrow-up"></div>
+						<li><a href="/page/login/login.html" onclick='loginOut()'><i
+								class="icon-key"></i> Log Out</a></li>
+					</ul>
+                </li>
+			</ul>
+		</div>
+	</aside>
+	<aside>
+		<div class="col-lg-2 no-padding-left" id="nav"></div>
+	</aside>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-lg-10 " id="content">
+				<img src="/static/img/1.jpg" class="img-responsive">
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript" src="/static/js/jquery-1.9.1.js"></script>
+	<script type="text/javascript">
+    function loginOut(){
+    	XHUtils.delSession();
+    }
+    
+    var hashchangeUrl = function () {
+        var routeName = window.location.hash.replace('#', '');
+        if (!routeName) {
+            return;
+        }
+        $.ajax({
+            url: routeName,
+            success: function(data) {
+                $('#content').html(data);
+            }
+        });
+    }
+    window['refresh'] = hashchangeUrl;//扩展刷新，使名称更容易记
+    $(window).bind('hashchange', function() {
+        hashchangeUrl();
+    });
+
+    /**
+     * 暂时先用ajax加载公共js css后面再换webpack打包
+     */
+    $.ajax({
+        url: '/page/publicJs.html',
+        success: function(data) {
+            $('#publicJs').html(data);
+            hashchangeUrl();
+        }
+    })
+    </script>
+	<div id="publicJs"></div>
+	<script type="text/html" id="treeTem">
+        <% if(list){ %>
+            <div class="tree">
+                <% for(var i = 0;i<list.length;i++){ %>
+                    <div>
+                        <i class="<%= list[i].classes %>"></i>
+                        <a href="<%= list[i].href?list[i].href:'#' %>" level="<%= list[i].level %>">
+                            <%= list[i].label %>
+                        </a>
+                        <% if(list[i].children){ %>
+                            <% include('child',list[i].children)  %>
+                                <% } %>
+                    </div>
+                    <% } %>
+            </div>
+            <% } %>
+    </script>
+	<script type="text/html" id="child">
+        <div>
+            <% for(var i = 0;i<$data.length;i++){ %>
+                <div>
+                    <i class="<%= $data[i].classes %>"> </i>
+                    <a href="<%= $data[i].href?$data[i].href:'#' %> " level="<%= $data[i].level %>">
+                        <%= $data[i].label %>
+                    </a>
+                    <% if($data[i].children){ %>
+                        <% include('child',$data[i].children)  %>
+                            <% } %>
+                </div>
+                <% } %>
+                    <div>
+    </script>
+	<script type="text/html" id="inputTem">
+        <% if(type==="textarea"){ %>
+            <textarea rows="<%= rows?rows:3 %>" <%= custom %> class=" <%= 'form-control '+inputClassese %>" id="<%= name %>" name="<%= name %>" value="<%= defaults %>">
+            </textarea>
+            <% }else if(type ==="select"){ %>
+                <select class=" <%= 'form-control '+inputClassese %>" id="<%= name %>" name="<%= name %>" value="<%= defaults %>" <%= custom %> " >
+                    <% XHUtils.getDictForSelect(dict,name) %>
+                </select>
+                <% }else{ %>
+                    <input type="<%= type?type:'text' %>" <%= custom %> class=" <%= 'form-control '+inputClassese %>" id="<%= name %>" name="<%= name %>" value="<%= defaults %>">
+                                    <% } %>
+    </script>
+	<script type="text/html" id="formTem">
+        <form class="form-horizontal" id="<%= id %>">
+            <!--form表单1-->
+            <div class=" col-lg-6">
+                <% for(var i=0;i<Math.round(list.length/2);i++){ %>
+                    <div class="form-group <%= list[i].type==='hidden'?'hidden':'' %>">
+                        <label for="<%= list[i].name %>" class="<%= list[i].labelClasses?list[i].labelClasses:'col-lg-3' %> control-label">
+                            <%= list[i].label %>
+                        </label>
+                        <div class="<%= list[i].inputWidth?list[i].inputWidth:'col-lg-8' %>">
+                            <% include('inputTem',list[i]) %>
+                        </div>
+                    </div>
+                    <% } %>
+            </div>
+            <!--form表单1-->
+            <div class=" col-lg-6">
+                <% for(var i=Math.round(list.length/2);i<list.length;i++){ %>
+                    <div class="form-group <%= list[i].type==='hidden'?'hidden':'' %>">
+                        <label for="<%= list[i].name %>" class="<%= list[i].labelClasses?list[i].labelClasses:'col-lg-3' %> control-label">
+                            <%= list[i].label %>
+                        </label>
+                        <div class="<%= list[i].inputWidth?list[i].inputWidth:'col-lg-8' %>">
+                            <% include('inputTem',list[i]) %>
+                        </div>
+                    </div>
+                    <% } %>
+            </div>
+        </form>
+    </script>
+	<script type="text/html" id="modalTem">
+        <div class="modal fade" tabindex="-1" id="<%= id %>" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel"><%= title %></h4>
+                    </div>
+                    <div class="modal-body" id="<%= bodyId %>">
+                        <% if(tableId){ %>
+                            <table id="<%= tableId %>"></table>
+                        <% } %>
+                        <% print(content) %>
+                            <!-- 如果里面有js操作的话请用jq append-->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal"
+						<% if(cancelId){%>
+							 id="<%= cancelId %>"
+						<% } %>
+                        >
+                            <%= closeLabel?closeLabel:'关闭' %>
+                        </button>
+                        <button type="button" class="btn btn-primary" 
+						<% if(saveId){%>
+							 id="<%= saveId %>"
+						<% } %>
+                        >
+                            <%= saveLabel?saveLabel:'保存' %>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>
+	<script type="text/html" id="navTem">
+        <div class="sort" >
+            <div class="sort-ti <%= classes %>" ><i class="icon-home"></i>
+                <%= title %>
+            </div>
+            <div class="sort-list ">
+                <ul>
+                    <% for(var i=0;i<list.length;i++){ %>
+                        <li class="">
+                            <a href="<%= list[i].href %>" class="<%= list[i].classes %> " <%= list[i].custom %> >
+		        	<%= list[i].label %>
+		        </a> 
+                            <% if(list[i].children){ %>
+                                <ul>
+                                    <% for(var j=0;j<list[i].children.length;j++){%>
+                                        <li>
+                                            <a href="<%= list[i].children[j].href %>" class="<%= list[i].children[j].classes %>">
+                                                <%= list[i].children[j].label %>
+                                            </a>
+                                        </li>
+                                        <% } %>
+                                </ul>
+                                <% } %>
+                        </li>
+                        <% } %>
+                </ul>
+            </div>
+        </div>
+    </script>
+	<script type="text/html" id="btnTemplate">
+        <div class="col-lg-12">
+            <% for(var i= 0;i<list.length;i++){ %>
+                <button class="btn <%= list[i].classes?list[i].classes:'col-lg-offset-5 btn-success' %>" id="<%= list[i].id %>">
+                    <%= list[i].label %>
+                </button>
+                <% } %>
+        </div>
+    </script>
+	<script type="text/html" id="formTemplate">
+        <form class="<%= 'form-horizontal '+classes %>" id="<%= id %>">
+            <% for(var i = 0;i<list.length;i++){ %>
+                <div class="form-group <%= list[i].type==='hidden'?'hidden':'' %>">
+                    <label for="<%= list[i].name %>" class="col-sm-2 control-label <%= list[i].labelClass %>">
+                        <%= list[i].label %>
+                    </label>
+                    <div class="col-sm-10">
+                        <% include('inputTem',list[i]) %>
+                    </div>
+                </div>
+                <% } %>
+        </form>
+    </script>
+    <script type="text/html" id="menuTem">
+        <div  class="navbar-default navbar-side" role="navigation">
+            <div class="sidebar-collapse">
+                <ul class="nav" id="<%= id %>">
+                    <% for(var i=0;i<list.length;i++){ %>
+                        <li>
+                            <a id="<%= list[i].id %>">
+                                <i class="<%= list[i].icon %>"></i>
+                                <%= list[i].label %>
+                                <span class="icon-fa arrow"></span>
+                            </a>
+                            <% if(list[i].children){ var datas = {list:list[i].children,index:2}; %>
+                                <% include('menuChild',datas); %>
+                            <% } %>                            
+                        </li>
+                    <% } %>
+                </ul>
+            </div>
+        </div>
+    </script>
+    <script type="text/html" id="menuChild">
+        <ul class="nav <%= 'nav-'+index+'-level' %>">
+            <% for(var j = 0;j<list.length;j++){ var l = list[j]; %>
+                <li>
+                    <a  id="<%= l.id %>">
+                        <% if(l.children){ %>
+                            <i class="<%= l.icon %>"></i>
+                            <%= l.label %>
+                            <span class="icon-fa arrow"></span>
+                        <% }else{ %>
+                            <i></i>
+                            <%= l.label %>
+                        <% } %>
+                    </a>
+                    <% if(l.children){ var datas = {list:l.children,index:index+1}; %>
+                        <% include('menuChild',datas); %>
+                    <% } %>
+                </li>
+            <% } %>
+        </ul>
+
+    </script>
+	<script type="text/html" id="leftTemplate">
+    </script>
+</body>
+
+</html>
